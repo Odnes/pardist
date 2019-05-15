@@ -1,0 +1,167 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Μοντέλα επικοινωνίας μεταξύ νημάτων και αρχέγονες δομές συγχρονισμού: Μια
+ μελέτη περίπτωσης (Working title)
+\end_layout
+
+\begin_layout Author
+Νεσλεχανίδης Οδυσσέας 15537
+\end_layout
+
+\begin_layout Standard
+Θα παρουσιαστούν κοινές αρχέγονες δομές συγχρονισμού (Semaphore, Spinlock,
+ Barrier), και οι εφαρμογές τους στη λύση κλασικών προβλημάτων συγχρονισμού.
+ Θα μελετηθούν πολυνηματικές υλοποιήσεις τους σε κώδικα C.
+ Ακόμη, θα αναλυθούν οι παράμετροι που αφορούν την υλοποίηση μοντέλων επικοινωνί
+ας μεταξύ νημάτων.
+ Τέλος, θα γραφεί πρόγραμμα σε C με χρήση της βιβλιοθήκης pthreads, ως εφαρμογή
+ των παραπάνω στο πρόβλημα του υπολογισμού της μεταφοράς θερμότητας.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Θεωρία παράλληλων συστημάτων 
+\end_layout
+
+\begin_layout Standard
+Προγραμματισμός κοινόχρηστης μνήμη, προγραμματισμός κατανεμημένης μνήμη,
+ σύγκριση και προτιμώμενες περιοχές εφαρμογών, σύγχρονα παραδείγματα (πιθανώς
+ κάτι από erlang, julia, go concurrency).
+ Σύνοψη τεχνικών συντονισμού πυρήνων, εξισορρόπησης φόρτου εργασιών, συγχρονισμο
+ύ.
+ Εσωτερική δομή θα οριστεί αργότερα.
+\end_layout
+
+\begin_layout Part
+Κλασικά προβλήματα συγχρονισμού
+\end_layout
+
+\begin_layout Subsection*
+Λεπτομέρειες υλοποίησης 
+\end_layout
+
+\begin_layout Standard
+Εισαγωγή στη βιβλιοθήκη pthreads, παρουσίαση των μεθόδων που πρόκειται να
+ χρησιμοποιηθούν.
+\end_layout
+
+\begin_layout Section
+Dining philosophers
+\end_layout
+
+\begin_layout Standard
+Παρουσίαση του προβλήματος (εισαγωγή όρων deadlock, resource starvation),
+ λύση με μέθοδο arbitrator για επίδειξη barriers.
+ Επιλογή δυαδικού σηματοφορέα αντί mutex, για συνοχή.
+\end_layout
+
+\begin_layout Section
+Readers-writers
+\end_layout
+
+\begin_layout Standard
+Παρουσίαση και λύση του προβλήματος, με προτίμηση στην απλούστερη εκδοχή
+ όπου δίνεται αφορμή για αμοιβαίο αποκλεισμό με χρήση spinlock.
+ Εάν αυτό αποδειχτεί δύσκολο, λύση της απλούστερης εκδοχής (producer-consumer
+ equivalent) με χρήση monitor.
+ Στην τελευταία περίπτωση, θα προηγηθεί κάλυψη της εν λόγω δομής στη θεωρία.
+\end_layout
+
+\begin_layout Part
+Μεταφορά θερμότητας σε δισδιάστατο χώρο: ένα πρόβλημα παράλληλου προγραμματισμού
+\end_layout
+
+\begin_layout Standard
+Παρουσίαση του προβλήματος παράλληλου υπολογισμού της μεταφοράς θερμότητας
+ σε δισδιάστατο χώρο.
+ Μελέτη της παράλληλης λύσης με προγραμματισμό κατανεμημένης μνήμης (MPI),
+ λύση με προγραμματισμό κοινόχρηστης μνήμης (pthreads).
+\end_layout
+
+\begin_layout Standard
+Τι προκύπτει από τη σύγκριση των δυο λύσεων ως προς την απόδοση και την
+ απλότητα υλοποίησης; Ποια γενικά κριτήρια για την επιλογή ανάμεσα στους
+ δύο τύπους παράλληλου προγραμματισμού μπορούν να εξαχθούν από τη μελέτη
+ των λύσεων του συγκεκριμένου προβλήματος;
+\end_layout
+
+\begin_layout Standard
+Η εσωτερική δομή της ενότητας αυτής θα οριστεί αργότερα.
+\end_layout
+
+\end_body
+\end_document
