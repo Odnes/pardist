@@ -1,5 +1,2 @@
-# TODO
-- Fix randWait().
-- Check that implementation matches problem description in wikipedia.
-- Test for bugs.
-- Substitute barberChair sem for FIFO solution.
+# About
+[PDF](https://github.com/thcloak/pardist/blob/master/report.pdf)
