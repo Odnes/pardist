@@ -1,0 +1,1027 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Sleeping Barber και Producer-Consumer problem: Μελέτη και υλοποίηση με pthreads
+\begin_inset Newline newline
+\end_inset
+
+-
+\begin_inset Newline newline
+\end_inset
+
+Παράλληλα και κατανεμημένα συστήματα
+\end_layout
+
+\begin_layout Author
+Οδυσσέας Νεσλεχανίδης
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Επιβλέπων καθηγητής: Χρήστος Γκόγκος
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Εισαγωγή
+\end_layout
+
+\begin_layout Standard
+Στην παρούσα τεχνική αναφορά παρουσιάζεται η μελέτη μου πάνω στα κλασικά
+ προβλήματα συγχρονισμού Sleeping Barber και Producer-Consumer.
+ Θεώρησα οφέλιμο να δοκιμάσω να γράψω ένα πρόγραμμα σε γλώσσα C με pthreads
+ με μια λύση για κάθε πρόβλημα, προκειμένου να θεμελιώσω καλύτερα την κατανόηση
+ μου επί των θεμάτων.
+ Στην πορεία, βρήκα μεγαλύτερο ενδιαφέρον στην προσπάθεια ταυτόχρονης λύσης
+ και των δύο προβλημάτων σε ένα πρόγραμμα.
+\end_layout
+
+\begin_layout Standard
+Στο παρόν, θα προσπαθήσω να κάνω μια κριτική παρουσίαση των προβλημάτων
+ και των λύσεων που επέλεξα να υλοποιήσω γι'αυτά, αποφεύγοντας να επαναλάβω
+ όσα παρουσιάζονται επαρκώς στα σχετικά λήμματα της wikipedia.
+ Θα γίνει, εν τούτοις εκτενής αναφορά σε αυτά, καθώς και σε ψευδοκώδικα
+ από άλλες ελεύθερες πηγές, πάντοτε με τη σχετική παραπομπή.
+\end_layout
+
+\begin_layout Part
+Περιγραφή της υλοποίησης
+\end_layout
+
+\begin_layout Section*
+Σύγκριση και θεωρητική οριοθέτηση
+\end_layout
+
+\begin_layout Standard
+Το πρόβλημα Παραγωγού-Καταναλωτή (Producer-Consumer)
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-3"
+
+\end_inset
+
+, ή αλλιώς Bounded Buffer problem, αφορά τη διαφορά στο ρυθμό εισαγωγής
+ και αφαίρεσης δεδομένων (throughput) σε έναν περιορισμένο χώρο μνήμης,
+ από τον παραγωγό και τον καταναλωτή αντίστοιχα.
+ Είναι λοιπόν, στη βάση του, ένα πρόβλημα συντονισμού του έργου των δυο
+ νημάτων, ούτως ώστε να μην υπάρχουν λάθος αιτήματα προς τη μνήμη.
+\end_layout
+
+\begin_layout Standard
+Το πρόβλημα του Κοιμώμενου Κουρέα (Sleeping Barber)
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-4"
+
+\end_inset
+
+ αφορά την αποφυγή συνθηκών ανταγωνισμού (race conditions) μεταξύ του κουρέα,
+ που αφαιρεί πελάτες από μια περιορισμένου μεγέθους αίθουσα αναμονής, και
+ των πελατών που προσθέτουν, ας πούμε, τους εαυτούς τους, σε αυτήν.
+ Στη βάση του αφορά, λοιπόν, την εξασφάλιση ασφάλειας νημάτωσης (thread
+ safety)
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-5"
+
+\end_inset
+
+ σε εργασίες που απαιτούν πρόσβαση στο χώρο μνήμης που αντιπροσωπεύει την
+ αίθουσα αναμονής.
+ Έτσι, αποφεύγεται ο κίνδυνος υλοποιούμενες λύσεις να οδηγούν σε νεκρό κλείδωμα
+ (deadlock).
+\end_layout
+
+\begin_layout Standard
+Από τις παραπάνω παραγράφους γίνεται ξεκάθαρο ότι τα δύο προβλήματα, παρότι
+ φαινομενικά όμοια, αφορούν διαφορετικά ζητήματα συγχρονισμού νημάτων/ διεργασιώ
+ν.
+ Εν τούτοις, στις περισσότερες περιπτώσεις, τα δύο σύνολα ζητημάτων τείνουν
+ να χρήζουν ταυτόχρονης διαχείρισης.
+ Γι'αυτό το λόγο, επέλεξα να μελετήσω τα προβλήματα γράφοντας ένα πρόγραμμα
+ και για τα 2.
+\end_layout
+
+\begin_layout Section*
+Κουρά με ουρά
+\end_layout
+
+\begin_layout Standard
+Η απλούστερη λύση για το πρόβλημα του κοιμώμενου κουρέα, όπως παρουσιάζεται
+ στη wikipedia, μπορεί να οδηγήσει σε λιμοκτονία (starvation) ενός νήματος
+ πελάτη.
+ Για αυτό ευθύνεται το γεγονός ότι, ανάλογα με τις προδιαγραφές των αρχέγονων
+ δομών συγχρονισμού (synchronization primitives) που παρέχονται με την εκάστοτε
+ βιβλιοθήκη, μπορεί η προτεραιότητα των νημάτων να εξασφαλίζεται με διαφορετικού
+ς τρόπους ή να αφήνεται απροσδιόριστη 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-2"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Αυτό με οδήγησε στη χρήση C++ προκειμένου να εκμεταλλευτώ τη δομή STL Queue.
+ Πρόκειται για μια templated δομή, που ήλπιζα να χρησιμοποιήσω εισάγοντας
+ σε αυτήν κλειδωμένους σημαφόρους για κάθε νεοεισερχόμενο νήμα-πελάτη.
+ Καθώς, όμως, ο τύπος δεδομένων sem_t, που αντιπροσωπεύει το σημαφόρο της
+ βιβλιοθήκης <semaphore.h> , δεν επιδέχεται συμβατικό χειρισμό (στα πρότυπα
+ π.χ.
+ του τύπου int), δεν βρήκα κάποιον τρόπο να το πετύχω.
+ Αναγκάστηκα, τελικά, να στηριχτώ σε μια, φαινομενικά, μη αποδοτική, ad
+ hoc υλοποίηση ουράς σημαφόρων.
+ Η έμπνευση γι'αυτήν προήλθε από το πολύτιμο The Little Book of Semaphores
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-2"
+
+\end_inset
+
+.
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+int main(int argc, char* argv[]){
+\end_layout
+
+\begin_layout Plain Layout
+
+  ...
+\end_layout
+
+\begin_layout Plain Layout
+
+  int numChairs = atoi(argv[1]);
+\end_layout
+
+\begin_layout Plain Layout
+
+  waitingRoomQueue = new sem_t[numChairs+1];
+\end_layout
+
+\begin_layout Plain Layout
+
+  sem_init(&seatsAvailable, 0, numChairs);
+\end_layout
+
+\begin_layout Plain Layout
+
+  ...
+\end_layout
+
+\begin_layout Plain Layout
+
+  for(int i = 0; i < numChairs + 1; i++){
+\end_layout
+
+\begin_layout Plain Layout
+
+    sem_init(&waitingRoomQueue[i], 0, 1);
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+void *customer(void *numChairs){
+\end_layout
+
+\begin_layout Plain Layout
+
+  int* number_of_chairs = (int*)numChairs;
+\end_layout
+
+\begin_layout Plain Layout
+
+  int positionInQueue{*number_of_chairs - 1};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  while(1){
+\end_layout
+
+\begin_layout Plain Layout
+
+    customerMessage(id, arrive_at_barbershop); 
+\end_layout
+
+\begin_layout Plain Layout
+
+    if(sem_trywait(&seatsAvailable)==-1){
+\end_layout
+
+\begin_layout Plain Layout
+
+      customerMessage(id, waiting_room_full);
+\end_layout
+
+\begin_layout Plain Layout
+
+      }
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\end_layout
+
+\begin_layout Plain Layout
+
+    else{            
+\end_layout
+
+\begin_layout Plain Layout
+
+      customerMessage(id, enter_waiting_room);
+\end_layout
+
+\begin_layout Plain Layout
+
+      while(positionInQueue > 0){
+\end_layout
+
+\begin_layout Plain Layout
+
+      sem_wait(&waitingRoomQueue[positionInQueue]);
+\end_layout
+
+\begin_layout Plain Layout
+
+      sem_post(&waitingRoomQueue[positionInQueue+1]);
+\end_layout
+
+\begin_layout Plain Layout
+
+      positionInQueue--;
+\end_layout
+
+\begin_layout Plain Layout
+
+      }
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    sem_wait(&barberChairEmpty);
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    sem_post(&waitingRoomQueue[1]);
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+  }  
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Παραπάνω, η sem_trywait δοκιμάζει να μειώσει το σημαφόρο seatsAvailable.
+ Εάν επιτύχει, που σημαίνει ότι ο σημαφόρος ήταν αρχικά μεγαλύτερος του
+ μηδέν, επιστρέφει 0 (επιτυχία) και η εκτέλεση του προγράμματος συνεχίζει
+ απορρίπτοντας τη συνθήκη.
+ Σημειώστε ότι, σε αυτήν την περίπτωση, ο σημαφόρος μεταβλήθηκε κατά τον
+ έλεγχο, παρότι ο έλεγχος απέτυχε.
+ Αυτό είναι σκόπιμο.
+\end_layout
+
+\begin_layout Standard
+Εάν η sem_trywait συναντήσει το σημαφόρο seatsAvailable σε κατάσταση που
+ δε δύναται να μειωθεί (0), η sem_trywait επιστρέφει -1 και τερματίζει,
+ σε αντίθεση με την sem_wait, που στην ίδια περίπτωση θα έθετε το νήμα σε
+ αναμονή.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "trywait"
+
+\end_inset
+
+ Ακολούθως, εισέρχεται στη συνθήκη, τυπώνει μήνυμα αποχώρησης του πελάτη
+ λόγω συμφόρησης της αίθουσας αναμονής, και φτάνει στο τέλος της while για
+ να τρέξει από την αρχή, με νέο id πελάτη (δείτε το επόμενο block κώδικα).
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Το waitingRoomQueue είναι ένας πίνακας σημαφόρων μεγέθους numChairs +1 που
+ αρχικοποιούνται με 1.
+ Ο σημαφόρος waitingRoomQueue[numChairs] αυξάνεται σε κάθε εκτέλεση του
+ σεναρίου else κατά 1, χωρίς ποτέ να μειωθεί.
+ Αυτή είναι μια αδυναμία που δεν έχω σκεφτεί πώς θα επιλύσω, δε φαίνεται
+ να δημιουργεί ωστόσο πρόβλημα βραχυπρόθεσμα.
+\end_layout
+
+\begin_layout Standard
+Η τιμή του σημαφόρου waitingRoomQueue[0] δεν μεταβάλλεται σε κανένα σημείο
+ του προγράμματος.
+ Αφέθηκε για λόγους διαισθητικής ομαλότητας.
+ Η αναμονή του κορυφαίου πελάτη της ουράς, στην πραγματικότητα εξαρτάται
+ από το σημαφόρο barberChairEmpty.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Ανταγωνισμός νημάτων παραγωγής πελατών
+\end_layout
+
+\begin_layout Standard
+Στη wikipedia, η λύση του χαρακτηριστικού προβλήματος του κοιμώμενου κουρέα,
+ παρουσιάζεται σε συνθήκη ανταγωνισμού μεταξύ κουρέα και πελάτη για την
+ πρόσβαση στο χώρο μνήμης που αντιπροσωπεύει την αίθουσα αναμονής.
+ Στη δική μου υλοποίηση ανέβαλα αυτό το ζήτημα, αναθέτοντας στον πελάτη
+ τα καθήκοντα προσθαφαίρεσης του εαυτού του στην ουρά αναμονής.
+ Προχώρησα σε αυτήν τη διασκευή με την προοπτική να κάνω τη ζωή μου ευκολότερη
+ σε μελλοντική υλοποίηση όπου θα προσθέσω πολλαπλά νήματα κουρέων.
+\end_layout
+
+\begin_layout Standard
+Το ίδιο ζήτημα ανταγωνισμού για την πρόσβαση εμφανίστηκε ξανά όταν προσέθεσα
+ πολλά νήματα-πελάτες.
+ Η υλοποίηση της wikipedia προσομοιώνει πολλαπλούς πελάτες στηριζόμενη σε
+ έναν ατέρμονο βρόχο του ίδιου νήματος.
+ Θεώρησα αυτού του είδους την προσομοίωση ελάχιστα ρεαλιστική και τεχνικά
+ απλουστευτική, και γι'αυτό επέλεξα να πολλαπλασιάσω τα νήματα-πελάτες,
+ που ωστόσο άφησα να λειτουργούν σε ατέρμονα βρόχο.
+ Έτσι, η λύση της wikipedia για το συγχρονισμό κουρέα - πελατών, εμφανίζεται
+ στη δική μου υλοποίηση μεταξύ κουρέα και 
+\begin_inset Quotes eld
+\end_inset
+
+νημάτων παραγωγής πελατών
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Η επιλογή αυτού του νέου ονόματος ίσως γίνει πιο κατανοητή εαν ληφθεί υπόψιν
+ ο τρόπος που επέλεξα να χειριστώ την ονοματοδοσία κάθε πελάτη.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+//guards critical section where customer() pulls 
+\end_layout
+
+\begin_layout Plain Layout
+
+//a unique id from global counter new_id.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+pthread_mutex_t id_lock; 
+\end_layout
+
+\begin_layout Plain Layout
+
+int new_id{1};  
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+void *customer(...){
+\end_layout
+
+\begin_layout Plain Layout
+
+  ...
+\end_layout
+
+\begin_layout Plain Layout
+
+  while(1){
+\end_layout
+
+\begin_layout Plain Layout
+
+    pthread_mutex_lock(&id_lock); //fetch unique id for             
+\end_layout
+
+\begin_layout Plain Layout
+
+    id = new_id;	          //customer
+\end_layout
+
+\begin_layout Plain Layout
+
+    new_id++;
+\end_layout
+
+\begin_layout Plain Layout
+
+    pthread_mutex_unlock(&id_lock);
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  ...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+Αξίζει να σημειωθεί ότι, στη δική μου προσέγγιση, προκύπτει ένα πρόβλημα
+ από την ελάττωση του αριθμού ενεργών νημάτων παραγωγής πελατών, όποτε κάποιο
+ από αυτά εισέρχεται στην αίθουσα αναμονής.
+ Αυτή η αδυναμία γίνεται ολότελα φανερή εφόσον οριστεί μεγάλος αριθμός θέσεων
+ στην αίθουσα αναμονής από το χρήστη (απαιτείται ως όρισμα κατά την εκτέλεση).
+ Καθώς ο αριθμός νημάτων παραγωγής πελατών περιορίζεται στα 5, υπάρχει το
+ ενδεχόμενο όλα τα νήματα να τεθούν σε αναμονή μέσα στην αίθουσα αναμονής.
+ Σε μια τέτοια περίπτωση, δε θα υπάρχουν αναχωρήσεις νέων πελατών μέχρι
+ να ελευθερωθεί το κορυφαίο νήμα από τον κουρέα, για να ξαναμπεί στο βρόχο.
+ Δεν μπόρεσα να σκεφτώ έναν ικανοποιητικό τρόπο να αντιμετωπίσω το πρόβλημα,
+ προς επίτευξη μεγαλύτερου ρεαλισμού, χωρίς να ξεφύγω πολύ από τις τεχνικές
+ προδιαγραφές του προβλήματος.
+ Το άφησα, λοιπόν, ως έχει.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+void *customer(void *numChairs){
+\end_layout
+
+\begin_layout Plain Layout
+
+  ...
+\end_layout
+
+\begin_layout Plain Layout
+
+  while(1){
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    else{
+\end_layout
+
+\begin_layout Plain Layout
+
+      ...
+\end_layout
+
+\begin_layout Plain Layout
+
+      sem_wait(&barberChairEmpty);
+\end_layout
+
+\begin_layout Plain Layout
+
+      pthread_mutex_lock(&room_state_change);
+\end_layout
+
+\begin_layout Plain Layout
+
+        customerMessage(id, check_on_barber);
+\end_layout
+
+\begin_layout Plain Layout
+
+        sem_post(&waitingRoomQueue[1]);
+\end_layout
+
+\begin_layout Plain Layout
+
+        sem_post(&seatsAvailable);
+\end_layout
+
+\begin_layout Plain Layout
+
+        sem_post(&barberPillow);
+\end_layout
+
+\begin_layout Plain Layout
+
+      pthread_mutex_unlock(&room_state_change);
+\end_layout
+
+\begin_layout Plain Layout
+
+      
+\end_layout
+
+\begin_layout Plain Layout
+
+      sem_wait(&seatBelt);
+\end_layout
+
+\begin_layout Plain Layout
+
+      customerMessage(id, leave_successfully);
+\end_layout
+
+\begin_layout Plain Layout
+
+      sem_post(&barberChairEmpty);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Παραπάνω, βλέπουμε πώς κινείται το κορυφαίο στην ουρά νήμα, μόλις ελευθερωθεί
+ από το σημαφόρο barberChairEmpty, που θα αυξήσει ο φρεσκοκουρεμένος πελάτης
+ πριν φτάσει στο τέλος της while και επιστρέψει για επανάληψη με νέο id
+ (δείτε παραπάνω).
+ Η μόνη παρέμβαση του νήματος - κουρέα είναι για την απελευθέρωση του νήματος
+ παραγωγής πελατών μόλις αυτό φτάσει στο sem_wait(&seatBelt).
+\end_layout
+
+\begin_layout Section*
+Το νήμα κουρέας
+\end_layout
+
+\begin_layout Standard
+Παραπάνω, συναντάμε για πρώτη φορά το σημαφόρο barberPillow.
+ Σε αυτό το σημαφόρο στηρίζεται ο συντονισμός του νήματος - κουρέα.
+ Η συνάρτηση barber είναι αρκετά απλή:
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+void *barber(void *unused){
+\end_layout
+
+\begin_layout Plain Layout
+
+  int isAsleep{-1};
+\end_layout
+
+\begin_layout Plain Layout
+
+  while(1){
+\end_layout
+
+\begin_layout Plain Layout
+
+    sem_getvalue(&barberPillow, &isAsleep);
+\end_layout
+
+\begin_layout Plain Layout
+
+    if(isAsleep == 0){
+\end_layout
+
+\begin_layout Plain Layout
+
+      std::cout<<"The barber is sleeping.
+\backslash
+n";
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+  sem_wait(&barberPillow);
+\end_layout
+
+\begin_layout Plain Layout
+
+  std::cout <<"The barber is cutting hair.
+\backslash
+n";
+\end_layout
+
+\begin_layout Plain Layout
+
+  randWait(5);
+\end_layout
+
+\begin_layout Plain Layout
+
+  std::cout <<"The barber has finished cutting hair.
+\backslash
+n";
+\end_layout
+
+\begin_layout Plain Layout
+
+  sem_post(&seatBelt);
+\end_layout
+
+\begin_layout Plain Layout
+
+  randWait(1);
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Πριν τερματίσει, ο κουρέας απελευθερώνει το νήμα παραγωγής πελατών που έχει
+ περάσει και κλειδώσει την κορυφή της ουράς (σημαφόρος barberChairEmpty).
+ Το νήμα αυτό ξεκλειδώνει με τη σειρά του το σημαφόρο barberChairEmpty,
+ πριν επιστρέψει στην αρχή του βρόχου.
+ 
+\end_layout
+
+\begin_layout Standard
+Προτού ο κουρέας προλάβει να επιστρέψει στο sem_wait(&barberPillow) για
+ να κοιμηθεί, μπορεί ένα νήμα παραγωγής πελατών που βρισκόταν σε αναμονή
+ ξεκλειδώματος του barberChairEmpty, να προλάβει να αυξήσει το σημαφόρο
+ barberPillow.
+ Σε αυτή την περίπτωση το νήμα κουρέας θα μειώσει απευθείας το σημαφόρο
+ barberPillow, χωρίς να χρειαστεί να περιμένει (δηλαδή, δε θα κοιμηθεί).
+ Η συνθήκη που βλέπουμε παραπάνω καθιστά πιθανότερο το μήνυμα ύπνου να μην
+ εμφανίζεται όταν ένα νήμα παραγωγής πελατών έχει τρέξει το 
+\end_layout
+
+\begin_layout Standard
+customerMessage(id, check_on_barber); 
+\end_layout
+
+\begin_layout Standard
+Δεν εξασφαλίζει ωστόσο κάτι τέτοιο.
+ Κρίνω ότι η χρήση σημαφόρου θα ήταν υπερβολή.
+\end_layout
+
+\begin_layout Section*
+Τυχαιότητα και η συναρτηση randWait()
+\end_layout
+
+\begin_layout Standard
+Για να πετύχω τυχαίους χρόνους κοντά σε μια ζητούμενη διάρκεια, για κάθε
+ εργασία, (κούρεμα, προσέλευση στο κουρείο, ταχύτητα νυστάγματος), έγραψα
+ τη συνάρτηση randWait():
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+void randWait(int approxSeconds){
+\end_layout
+
+\begin_layout Plain Layout
+
+std::this_thread::sleep_for(static_cast<std::chrono::milliseconds>
+\end_layout
+
+\begin_layout Plain Layout
+
+(approxSeconds *  (rand() %  1000) ) ); 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Ο σπόρος τυχαιότητας (seed) για την rand() απαιτείται ως όρισμα κατά την
+ εκτέλεση του προγράμματος.
+ Εν τούτοις, φαντάζει άχρηστος, δεδομένου ότι ο μη ντετερμινισμός στους
+ χρονισμούς των παράλληλων νημάτων παραγωγής πελατών είναι αρκετός, ώστε
+ κάθε διαδοχική εκτέλεση, ακόμα και με τον ίδιο σπόρο τυχαιότητας, να διαφέρει
+ απο την προηγούμενη.
+\end_layout
+
+\begin_layout Section*
+Λοιπά ζητήματα
+\end_layout
+
+\begin_layout Standard
+Για τα μηνύματα των νημάτων παραγωγής πελατών, χρειάστηκε να δημιουργήσω
+ μια νέα συναρτηση customerMessage(int id, messageType message) (το messageType
+ είναι enum).
+ Αυτό επειδή κάθε χρήση του operator<< συνιστά ξεχωριστή κλήση της cout,
+ γι'αυτό και αρκετά μηνύματα κόβονταν στην μέση λόγω cout που εκτελούνταν
+ παράλληλα σε διαφορετικά νήματα.
+ Η λύση
+\begin_inset CommandInset citation
+LatexCommand cite
+key "coutparallel"
+
+\end_inset
+
+ ήταν απλή και ανευρέθηκε με αναζήτηση στο διαδίκτυο.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Γενικά, τα απαιτούμενα ορίσματα, αυτά του αριθμού των θέσεων στην αίθουσα
+ αναμονής και του σπόρου τυχαιότητας, δεν επαρκούν για να εκθέσουν εύκολα
+ όλες τις διαφορετικές συνθήκες που μπορεί να επικρατούν στο μαγαζί.
+\end_layout
+
+\begin_layout Standard
+Σε έναν υπολογιστή με τις προδιαγραφές του δικού μου, για παράδειγμα, δεν
+ υπάρχει τρόπος, μέσω ορισμάτων, να αυξομειωθεί αισθητά η συχνότητα που
+ ο κουρέας βρίσκει χρόνο να πάρει έναν υπνάκο.
+ Κάτι τέτοιο μπορεί, ωστόσο, να επιτευχθεί εύκολα, αυξομειώνοντας το όρισμα
+ της συνάρτησης randWait(), όταν καλείται μεταξύ της αναχώρησης ενός νέου
+ πελάτη, και της άφιξης του στο κουρείο.
+ Μικρομετατροπές για διευκόλυνση αφήνονται για αργότερα.
+\end_layout
+
+\begin_layout Standard
+Στην παρούσα κατάσταση του κώδικά, αναμενόμενα πρέπει να είναι μικρά κυρίως
+ στυλιστικά παραπτώματα όπως η έλλειψη συνοχής στην ονοματοδοσία των μεταβλητών
+ (camelCase, under_score) και στην επιλογή μεταξύ mutexes και δυαδικών σημαφόρων.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "prodcon"
+
+\end_inset
+
+https://en.wikipedia.org/wiki/Producer-consumer_problem
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "sleepbarb"
+
+\end_inset
+
+https://en.wikipedia.org/wiki/Sleeping_barber_problem
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "threadsafe"
+
+\end_inset
+
+https://en.wikipedia.org/wiki/Thread_safety
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "lilbookosem"
+
+\end_inset
+
+p.47-52 The Little Book of Semaphores - Green Tea Press - Allen B.
+ Downey
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "trywait"
+
+\end_inset
+
+https://linux.die.net/man/3/sem_trywait
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "coutparallel"
+
+\end_inset
+
+https://stackoverflow.com/questions/15033827/multiple-threads-writing-to-stdcout-
+or-stdcerr
+\end_layout
+
+\end_body
+\end_document

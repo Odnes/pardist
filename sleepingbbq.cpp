@@ -11,6 +11,10 @@
     Roadmap:
     - Impelement traffic load factor, passed as argument. Should make it
         easier to adjust barber sleepiness.
+
+        This well-commented implementation helped me get
+        get started on the problem.
+        https://github.com/aseempatni/os/blob/master/5_semaphore/sleepBarber.c
 */
 
 #include <pthread.h>
