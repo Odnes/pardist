@@ -112,7 +112,14 @@ Sleeping Barber και Producer-Consumer problem: Μελέτη και υλοπο
  με μια λύση για κάθε πρόβλημα, προκειμένου να θεμελιώσω καλύτερα την κατανόηση
  μου επί των θεμάτων.
  Στην πορεία, βρήκα μεγαλύτερο ενδιαφέρον στην προσπάθεια ταυτόχρονης λύσης
- και των δύο προβλημάτων σε ένα πρόγραμμα.
+ και των δύο προβλημάτων σε ένα πρόγραμμα
+\begin_inset CommandInset citation
+LatexCommand cite
+key "myprog"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -135,7 +142,7 @@ Sleeping Barber και Producer-Consumer problem: Μελέτη και υλοπο
 Το πρόβλημα Παραγωγού-Καταναλωτή (Producer-Consumer)
 \begin_inset CommandInset citation
 LatexCommand cite
-key "key-3"
+key "prodcon"
 
 \end_inset
 
@@ -150,7 +157,7 @@ key "key-3"
 Το πρόβλημα του Κοιμώμενου Κουρέα (Sleeping Barber)
 \begin_inset CommandInset citation
 LatexCommand cite
-key "key-4"
+key "sleepbarb"
 
 \end_inset
 
@@ -161,7 +168,7 @@ key "key-4"
  safety)
 \begin_inset CommandInset citation
 LatexCommand cite
-key "key-5"
+key "threadsafe"
 
 \end_inset
 
@@ -195,7 +202,7 @@ key "key-5"
 ς τρόπους ή να αφήνεται απροσδιόριστη 
 \begin_inset CommandInset citation
 LatexCommand cite
-key "key-2"
+key "lilbookosem"
 
 \end_inset
 
@@ -216,7 +223,7 @@ key "key-2"
  
 \begin_inset CommandInset citation
 LatexCommand cite
-key "key-2"
+key "lilbookosem"
 
 \end_inset
 
@@ -959,6 +966,45 @@ key "coutparallel"
 Στην παρούσα κατάσταση του κώδικά, αναμενόμενα πρέπει να είναι μικρά κυρίως
  στυλιστικά παραπτώματα όπως η έλλειψη συνοχής στην ονοματοδοσία των μεταβλητών
  (camelCase, under_score) και στην επιλογή μεταξύ mutexes και δυαδικών σημαφόρων.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Ολόκληρο το αρχείο cpp υπάρχει στη διεύθυνση:
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/thcloak/pardist/blob/master/sleepingbbq.cpp"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "myprog"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/thcloak/pardist/blob/master/sleepingbbq.cpp"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Bibliography
@@ -968,7 +1014,14 @@ key "prodcon"
 
 \end_inset
 
-https://en.wikipedia.org/wiki/Producer-consumer_problem
+
+\begin_inset CommandInset href
+LatexCommand href
+target "https://en.wikipedia.org/wiki/Producer-consumer_problem"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Bibliography
@@ -978,7 +1031,14 @@ key "sleepbarb"
 
 \end_inset
 
-https://en.wikipedia.org/wiki/Sleeping_barber_problem
+
+\begin_inset CommandInset href
+LatexCommand href
+target "https://en.wikipedia.org/wiki/Sleeping_barber_problem"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Bibliography
@@ -988,7 +1048,14 @@ key "threadsafe"
 
 \end_inset
 
-https://en.wikipedia.org/wiki/Thread_safety
+
+\begin_inset CommandInset href
+LatexCommand href
+target "https://en.wikipedia.org/wiki/Thread_safety"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Bibliography
@@ -998,7 +1065,15 @@ key "lilbookosem"
 
 \end_inset
 
-p.47-52 The Little Book of Semaphores - Green Tea Press - Allen B.
+p.47-52 
+\begin_inset CommandInset href
+LatexCommand href
+name "The Little Book of Semaphores"
+target "greenteapress.com/semaphores/LittleBookOfSemaphores.pdf"
+
+\end_inset
+
+ - Green Tea Press - Allen B.
  Downey
 \end_layout
 
@@ -1009,7 +1084,14 @@ key "trywait"
 
 \end_inset
 
-https://linux.die.net/man/3/sem_trywait
+
+\begin_inset CommandInset href
+LatexCommand href
+target "https://linux.die.net/man/3/sem_trywait"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Bibliography
@@ -1019,8 +1101,14 @@ key "coutparallel"
 
 \end_inset
 
-https://stackoverflow.com/questions/15033827/multiple-threads-writing-to-stdcout-
-or-stdcerr
+
+\begin_inset CommandInset href
+LatexCommand href
+target "https://stackoverflow.com/questions/15033827/multiple-threads-writing-to-stdcout-or-stdcerr"
+
+\end_inset
+
+
 \end_layout
 
 \end_body
