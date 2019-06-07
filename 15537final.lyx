@@ -97,14 +97,14 @@
 Θεωρία παράλληλου προγραμματισμού συστημάτων
 \end_layout
 
-\begin_layout Section*
+\begin_layout Section
 Εισαγωγή
 \end_layout
 
 \begin_layout Standard
 Τα προγραμματιστικά εργαλεία που μας επιτρέπουν να εκμεταλλευόμαστε τις
  δυνατότητες παράλληλης επεξεργασίας των σύγχρονων πολυεπεξεργαστών και
- συστοιχιών (clusters) επεξεργαστών σχεδιάζονται βάσει ενός συστήματος μοντέλων
+ συστοιχιών (clusters) επεξεργαστών σχεδιάζονται βάσει μιας ομάδας μοντέλων
  παράλληλου προγραμματισμού.
  Ιστορικά, αυτά τα μοντέλα ανταποκρίνονταν πιο άμεσα στη δομή του παράλληλου
  υλικού.
@@ -132,10 +132,10 @@ key "sharedvsdistributed"
 \end_layout
 
 \begin_layout Standard
-Την ίδια στιγμή, η επιλογή ενός μοντέλου έχει θεμελιώδη ρόλο στις αποφάσεις
- που λαμβάνονται κατά το σχεδιασμό εξειδικευμένων παράλληλων υπολογιστικών
- συστημάτων μεγάλης κλίμακας, στον κλάδο της υπολογιστικής υψηλών αποδόσεων
- (high performance computing).
+Την ίδια στιγμή, η επιλογή του μοντέλου έχει θεμελιώδη ρόλο στις αποφάσεις
+ που λαμβάνονται κατά το σχεδιασμό παράλληλων υπολογιστικών συστημάτων μεγάλης
+ κλίμακας, στον κλάδο της υπολογιστικής υψηλών αποδόσεων (high performance
+ computing).
 \begin_inset CommandInset citation
 LatexCommand cite
 key "hpcdesign"
@@ -151,8 +151,8 @@ key "hpcdesign"
 
 \begin_layout Standard
 Τα μοντέλα παράλληλου προγραμματισμού χωρίζονται σε άξονες βάσει του τρόπου
- (εάν υφίσταται) που επικοινωνούν μεταξύ τους οι παράλληλες διεργασίες και
- βάσει του είδους προβλημάτων που επιδιώκεται να επιλυθούν με παράλληλη
+ (εάν υφίσταται) που επικοινωνούν μεταξύ τους οι παράλληλες διεργασίες,
+ και βάσει της φύσης των προβλημάτων που επιδιώκεται να λυθούν με παράλληλη
  επεξεργασία.
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -169,21 +169,22 @@ key "parprogmodel"
 
 \begin_layout Standard
 Η παρούσα εργασία κινείται στον πρώτο άξονα, παρουσιάζοντας τα βασικά μοντέλα
- επικοινωνίας μεταξύ διεργασιών και ειδικότερα μελετώντας τα κλασικά προγραμματι
-στικά εργαλεία για την επίλυση προβλημάτων συγχρονισμού που ενυπάρχουν στον
- προγραμματισμό κοινόχρηστης μνήμης, τις λεγόμενες αρχέγονες δομές συγχρονισμού
- (synchronization primitives).
+ επικοινωνίας μεταξύ διεργασιών, και ειδικότερα μελετώντας τα κλασικά προγραμματ
+ιστικά εργαλεία για την επίλυση προβλημάτων συγχρονισμού που ενυπάρχουν
+ στον προγραμματισμό κοινόχρηστης μνήμης, τις λεγόμενες αρχέγονες δομές
+ συγχρονισμού (synchronization primitives).
 \end_layout
 
-\begin_layout Section*
+\begin_layout Section
 Επικοινωνία μέσω κοινόχρηστης μνήμης (shared memory)
 \end_layout
 
 \begin_layout Standard
 Στην παράλληλη ή ταυτόχρονη (concurrent) υπολογιστική, ένας πολύ φυσικός
- τρόπος για την επίτευξη επικοινωνίας μεταξύ διεργασιών, καθώς και για την
- αποφυγή σπατάλης χώρου από πολλαπλά όμοια αντίγραφα δεδομένων, είναι η
- χρήση ενός κοινού χώρου μνήμης από πολλές διεργασίες.
+ και προγραμματιστικά βολικός τρόπος για την επίτευξη επικοινωνίας μεταξύ
+ διεργασιών, καθώς και για την αποφυγή σπατάλης χώρου από πολλαπλά όμοια
+ αντίγραφα δεδομένων, είναι η χρήση ενός κοινού χώρου μνήμης από πολλές
+ διεργασίες.
  Στο παρελθόν, ήταν διαδεδομένα τα υπολογιστικά συστήματα πολυεπεξεργαστών
  που διέθεταν αληθινά κοινόχρηστη μνήμη, με την οποία επικοινωνούσαν μέσω
  κοινού διαύλου.
@@ -199,6 +200,10 @@ key "sharedvsdistributed"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+Συστήματα μη ομοιογενούς πρόσβασης μνήμης (NUMA)
 \end_layout
 
 \begin_layout Standard
@@ -256,15 +261,24 @@ key "pthreadnuma"
 \begin_inset Newline newline
 \end_inset
 
+
+\end_layout
+
+\begin_layout Subsection
+Υβριδικά παράλληλα συστήματα
+\end_layout
+
+\begin_layout Standard
 Τα αναφερθέντα χαρακτηριστικά των εργαλείων προγραμματισμού που στηρίζονται
- στην αφαίρεση μιας εικονικά ενιαίας κοινόχρηστης μνήμης συντελούν στο αποτέλεσμ
-α η χρήση τους να περιορίζεται σε υπολογιστικά συστήματα μικρής κλίμακας.
+ στην αφαίρεση μιας εικονικά ενιαίας κοινόχρηστης μνήμης, συντελούν στο
+ αποτέλεσμα η χρήση τους να περιορίζεται σε υπολογιστικά συστήματα μικρής
+ κλίμακας.
  Διαδεδομένη, ωστόσο, είναι η χρήση τους σε συνδυασμό με εργαλεία προγραμματισμο
 ύ κατανεμημένης μνήμης, για την υλοποίηση παράλληλων προγραμμάτων που εκτελούν
  επί μέρους εργασίες σε μικρά σύνολα επεξεργαστών, εντός υπολογιστικών συστημάτω
 ν μεγαλύτερης κλίμακας.
- Σε αυτού του είδους τις υβριδικές προσεγγίσεις, η επικοινωνία των επί μέρους
- εργασιών μεταξύ τους, αλλά και ευρύτερα με το σύστημα, υλοποιείται σε όρους
+ Σε αυτού του είδους τις υβριδικές προσεγγίσεις, η επικοινωνία των επι μέρους
+ έργων μεταξύ τους, αλλά και ευρύτερα με το σύστημα, υλοποιείται σε όρους
  προγραμματισμού κατανεμημένης μνήμης (message passing).
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -275,21 +289,254 @@ key "hybrid"
 
 \end_layout
 
-\begin_layout Section*
+\begin_layout Section
 Επικοινωνία μεσω μηνυμάτων (message passing)
 \end_layout
 
-\begin_layout Part
-Κλασικά προβλήματα συγχρονισμού
+\begin_layout Standard
+Ο κλάδος του παραλληλισμού κατανεμημένης μνήμης είναι ευρύτατος και εσχάτως
+ ραγδαία εξελισσόμενος.
+ Καθώς δεν αποτελεί κεντρικό θέμα αυτής της εργασίας, θα καλυφθεί σύντομα
+ και αμιγώς θεωρητικά.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Παραδοσιακά, με τον όρο 
+\begin_inset Quotes eld
+\end_inset
+
+παραλληλισμός κατανεμημένης μνήμης
+\begin_inset Quotes erd
+\end_inset
+
+ περιγράφεται το μοντέλο όπου μια μονάδα επεξεργασίας εκτελεί ένα έργο σε
+ έναν τοπικό χώρο μνήμης, το αποτέλεσμα του οποίου στη συνέχεια επικοινωνείται
+ μέσω μηνυμάτων προς μια απομακρυσμένη μονάδα επεξεργασίας.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "sharedvsdistributed"
+
+\end_inset
+
+ Αυτό προγραμματιστικά μεταφράζεται σε συναρτήσεις αποστολής (send) και
+ λήψης (receive) μηνυμάτων, που συντονίζονται σε άμεση επικοινωνία βάσει
+ κοινού πρωτοκόλλου (π.χ.
+ master - slave)
+\begin_inset CommandInset citation
+LatexCommand cite
+key "mpip2p"
+
+\end_inset
+
+ ή, σε πιο σύνθετα και/ή ασύγχρονα συστήματα, με τη χρήση ενδιάμεσου υλικού
+ ή λογισμικού διαχείρισης μηνυμάτων (message handlers, buffers).
+\begin_inset CommandInset citation
+LatexCommand cite
+key "msghandler"
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
 \end_layout
 
-\begin_layout Subsection*
-Λεπτομέρειες υλοποίησης 
+\begin_layout Subsection
+Το πρότυπο MPI
 \end_layout
 
 \begin_layout Standard
-Εισαγωγή στη βιβλιοθήκη pthreads, παρουσίαση των μεθόδων που πρόκειται να
- χρησιμοποιηθούν.
+Στο προγραμματιστικό μοντέλο επικοινωνίας μέσω μηνυμάτων, ένα πρόγραμμα
+ που εκτελείται σε ένα ζεύγος κεντρικής μονάδας επεξεργασίας (CPU) και μνήμης
+ ονομάζεται επεξεργαστής (processor).
+ Στην προγραμματιστική κοινότητα έχει καθιερωθεί αυτός ο όρος και για τις
+ διεργασίες (processes) που ορίζονται από το πρότυπο της Διεπαφής Μεταβίβασης
+ Μηνυμάτων (Message Passing Interface: MPI).
+\begin_inset CommandInset citation
+LatexCommand cite
+key "mpiterm"
+
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Ο όρος διεργασία υιοθετήθηκε σε αυτό το πρότυπο για να υποδηλώσει ότι, σε
+ υλοποιήσεις στηριγμένες σε αυτό, η αντιστοίχιση μιας μονάδας επεξεργασίας
+ ανά μονάδα μνήμης παύει να είναι απόλυτη.
+ Αυτό είναι ένα θεμελιώδες χαρακτηριστικό της MPI, που διευκολύνει τη φορητότητα
+ του κώδικα ανάμεσα σε διαφορετικές πλατφόρμες (λειτουργικά συστήματα) και
+ διαφορετικής κλίμακας υπολογιστικά συστήματα.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "mpiflex1,mpiflex2,mpispecsdominance"
+
+\end_inset
+
+ Δημιουργεί, εν τούτοις, μια σύγχυση με τις διεργασίες (processes) των λειτουργι
+κών συστημάτων.
+ Γι'αυτό έχει εμφανιστεί και ο όρος proclets, για πιο ειδική αναφορά στις
+ διεργασίες του προτύπου MPI.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "proclets"
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Το πρότυπο MPI υπήρξε για περισσότερο από μια δεκαετία, και παραμένει, το
+ κυρίαρχο πρότυπο μεταβίβασης μηνυμάτων των προγραμμάτων που χρησιμοποιούνται
+ στη βιομηχανία της υπολογιστικής υψηλών αποδόσεων.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "mpispecsdominance"
+
+\end_inset
+
+ Σήμερα, ωστόσο, η εμφάνιση νέων εργαλείων κατανεμημένης υπολογιστικής υψηλών
+ αποδόσεων, όπως τα σχετικά εύκολα στην εγκατάσταση (deployment) frameworks
+ Apache Hadoop και Spark, και γλωσσών κατασκευασμένων εξ αρχής για παράλληλη
+ επεξεργασία κατανεμημένης μνήμης, όπως οι Charm++, Chapel, Julia, Erlang
+ / Elixir, έχουν αρχίσει να περιορίζουν το εύρος εφαρμογών όπου το πρότυπο
+ MPI, στις διάφορες υλοποιήσεις του, διατηρεί την πρωτοκαθεδρία.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "mpisucks,hadoop,julia"
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Υπολογιστική γενικού σκοπού σε GPU (GPGPU)
+\end_layout
+
+\begin_layout Standard
+Οι μονάδες επεξεργασίας γραφικών (GPU) κατασκευάζονται με γνώμονα την επίλυση
+ προβλημάτων γραφικής απεκόνισης και επεξεργασίας εικόνων.
+ Η φύση αυτών των προβλημάτων έχει προσανατολίσει το σχεδιασμό των GPUs
+ στην επίτευξη υψηλών αποδόσεων συνολικά σε υπολογισμούς που επωφελούνται
+ από έντονο παραλληλισμό δεδομένων.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "dataparallel"
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Την ίδια στιγμή, οι GPUs έχουν πολύ περιορισμένες υπολογιστικές λειτουργίες
+ και δυνατότητες προγραμματισμού, και η χρήση τους ενδείκνυται αποκλειστικά
+ για επίλυση προβλημάτων που επωφελούνται από την επεξεργασία ροών (stream
+ processing).
+\begin_inset CommandInset citation
+LatexCommand cite
+key "gpudrawback"
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Η τεχνολογία διαύλων υπολογιστικής γενικού σκοπού σε GPU (GPGPU pipelines)
+ που αναπτύχθηκε ως λογισμικό με σκοπό τη βελτίωση των γραφικών σκίασης
+ (shaders) στις αρχές της προηγούμενης δεκαετίας
+\begin_inset CommandInset citation
+LatexCommand cite
+key "gpgpuhistory"
+
+\end_inset
+
+, σύντομα αξιοποιήθηκε και για πολύ διαφορετικούς σκοπούς, σε υπολογισμούς
+ που επωφελούνται από υψηλές επιδόσεις στην παραλληλία δεδομένων (επιστημονική
+ υπολογιστική, βιοπληροφορική, εξόρυξη κρυπτονομισμάτων).
+\begin_inset CommandInset citation
+LatexCommand cite
+key "gpgpuapplications"
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Τα προγραμματιστικά μοντέλα που αναπτύχθηκαν για τον προγραμματισμό συστημάτων
+ GPGPU στηρίχθηκαν στην θεώρηση τους ως συστήματα κατανεμημένης μνήμης.
+ Αυτή η αφαίρεση είχε μεγαλύτερη ανταπόκριση στην πραγματικότητα του τότε
+ υλικού, όπου η επικοινωνία μεταξύ επεξεργαστή και κάρτας γραφικών γινόταν
+ μέσω διαύλου PCI, που μεταφραζόταν σε μεγάλη καθυστέρηση (latency) στην
+ επικοινωνία μεταξύ των δύο επεξεργαστικών μονάδων (CPU και GPU) με τις
+ επιμέρους μονάδες μνήμης τους.
+ Σήμερα, υπάρχουν προτάσεις για ανάπτυξη προτύπων προγραμματισμού GPGPU
+ που να προσομοιάζουν περισσότερο το μοντέλο παραλληλισμού κοινόχρηστης
+ μνήμης.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "sharedvsdistributed"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Προβλήματα συγχρονισμού σε συστήματα κοινόχρηστης μνήμης
+\end_layout
+
+\begin_layout Section
+Αρχέγονες Δομές Συγχρονισμού
+\end_layout
+
+\begin_layout Standard
+Κοινόχρηστη μνήμη = Συνθήκες ανταγωνισμού, προβλήματα συντονισμού τύπου
+ bounded buffer -> Αμοιβαίος αποκλεισμός
+\end_layout
+
+\begin_layout Subsection
+Spinlock
+\end_layout
+
+\begin_layout Subsection
+Barrier
+\end_layout
+
+\begin_layout Subsection
+Semaphore, Mutex
 \end_layout
 
 \begin_layout Section
@@ -418,6 +665,151 @@ key "hybrid"
 
 https://software.intel.com/en-us/articles/hybrid-parallelism-parallel-distributed-
 memory-and-shared-memory-computing
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "mpip2p"
+
+\end_inset
+
+https://en.wikipedia.org/wiki/Message_Passing_Interface#Point-to-point_basics
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "msghandler"
+
+\end_inset
+
+https://en.wikipedia.org/wiki/Message_passing#Synchronous_versus_asynchronous_mess
+age_passing
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "mpiterm"
+
+\end_inset
+
+https://en.wikipedia.org/wiki/Message_Passing_Interface#Functionality
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "mpiflex1"
+
+\end_inset
+
+http://www.netlib.org/utk/papers/mpi-book/node3.html
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "mpiflex2"
+
+\end_inset
+
+www.netlib.org/utk/people/JackDongarra/PAPERS/cluster.pdf
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "mpispecsdominance"
+
+\end_inset
+
+https://en.wikipedia.org/wiki/Message_Passing_Interface#Overview
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "proclets"
+
+\end_inset
+
+https://dl.acm.org/citation.cfm?id=1851507
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "mpisucks"
+
+\end_inset
+
+https://www.dursi.ca/post/hpc-is-dying-and-mpi-is-killing-it.html
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "hadoop"
+
+\end_inset
+
+https://en.wikipedia.org/wiki/Apache_Hadoop#Prominent_use_cases
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "julia"
+
+\end_inset
+
+https://en.wikipedia.org/wiki/Julia_(programming_language)#Notable_uses
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "dataparallel"
+
+\end_inset
+
+https://en.wikipedia.org/wiki/Graphics_processing_unit#Stream_processing_and_gener
+al_purpose_GPUs_(GPGPU)
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "gpudrawback"
+
+\end_inset
+
+https://en.wikipedia.org/wiki/General-purpose_computing_on_graphics_processing_uni
+ts#Stream_processing
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "gpgpuhistory"
+
+\end_inset
+
+https://en.wikipedia.org/wiki/General-purpose_computing_on_graphics_processing_uni
+ts#History
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "gpgpuapplications"
+
+\end_inset
+
+https://en.wikipedia.org/wiki/General-purpose_computing_on_graphics_processing_uni
+ts#Applications
 \end_layout
 
 \end_body

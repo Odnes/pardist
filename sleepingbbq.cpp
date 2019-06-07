@@ -8,6 +8,8 @@
     Known issues:
     - sem waitingRoomQueue[numChairs] is incremented indefinitely.
         Might break something in the long run :/
+    - It is possible to have all customer threads wait simultaneously,
+        preventing new customers from leaving for barber shop.
     Roadmap:
     - Impelement traffic load factor, passed as argument. Should make it
         easier to adjust barber sleepiness.
