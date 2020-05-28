@@ -1,5 +1,5 @@
-#LyX 2.2 created this file. For more info see http://www.lyx.org/
-\lyxformat 508
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
 \begin_document
 \begin_header
 \save_transient_properties true
@@ -7,7 +7,7 @@
 \textclass article
 \use_default_options true
 \maintain_unincluded_children false
-\language english
+\language greek
 \language_package default
 \inputencoding auto
 \fontencoding global
@@ -21,12 +21,15 @@
 \font_osf false
 \font_sf_scale 100 100
 \font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
 \graphics default
 \default_output_format default
 \output_sync 0
 \bibtex_command default
 \index_command default
 \paperfontsize default
+\spacing single
 \use_hyperref false
 \papersize default
 \use_geometry false
@@ -49,6 +52,7 @@
 \suppress_date false
 \justification true
 \use_refstyle 1
+\use_minted 0
 \index Index
 \shortcut idx
 \color #008000
@@ -57,7 +61,10 @@
 \tocdepth 3
 \paragraph_separation indent
 \paragraph_indentation default
-\quotes_language english
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style french
+\dynamic_quotes 0
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
@@ -71,23 +78,63 @@
 \begin_body
 
 \begin_layout Title
-Μοντέλα επικοινωνίας μεταξύ νημάτων και αρχέγονες δομές συγχρονισμού: Μια
- μελέτη περίπτωσης (Working title)
+Μοντέλα επικοινωνίας μεταξύ νημάτων και άγρυπνοι μπαρμπέρηδες: μια προγραμματιστ
+ική εξερεύνηση κλασικών προβλημάτων συγχρονισμού διεργασιών
 \end_layout
 
 \begin_layout Author
-Νεσλεχανίδης Οδυσσέας 15537
+Νεσλεχανίδης Οδυσσέας 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+ΑΜ: 15537
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Επιβλέπων: Καθηγητής Αντωνιάδης Νικόλαος
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
 \end_layout
 
-\begin_layout Standard
-Θα παρουσιαστούν κοινές αρχέγονες δομές συγχρονισμού (Semaphore, Spinlock,
- Barrier), και οι εφαρμογές τους στη λύση κλασικών προβλημάτων συγχρονισμού.
- Θα μελετηθούν πολυνηματικές υλοποιήσεις τους σε κώδικα C.
- Ακόμη, θα αναλυθούν οι παράμετροι που αφορούν την υλοποίηση μοντέλων επικοινωνί
-ας μεταξύ νημάτων.
- Τέλος, θα γραφεί πρόγραμμα σε C με χρήση της βιβλιοθήκης pthreads, ως εφαρμογή
- των παραπάνω στο πρόβλημα του υπολογισμού της μεταφοράς θερμότητας.
+\begin_layout Abstract
+Περιγράφεται συνοπτικά το θεωρητικό πεδίο της παράλληλης υπολογιστικής όπως
+ ορίζεται στον άξονα της 
+\lang english
+διαδιεργασιακής επικοινωνίας.
+ Παρουσιάζονται κοινές αρχέγονες δομές συγχρονισμού (Semaphore, Spinlock,
+ Barrier), και εφαρμογές τους στη λύση κλασικών προβλημάτων συγχρονισμού
+ κοινόχρηστης μνήμης (Προβλήματα κοιμώμενου κουρέα, παραγωγού - καταναλωτή).
+ Μελετώνται πολυνηματικές υλοποιήσεις τους σε κώδικα C++ με χρήση της βιβλιοθηκη
+ς pthread.
+ Τέλος, γίνεται αναφορά στις παραμέτρους που επηρέασαν τις αποφάσεις υλοποίησης.
+ 
+\lang greek
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
 \begin_inset Newline newline
+\end_inset
+
+
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
 \end_inset
 
 
@@ -98,10 +145,14 @@
 \end_layout
 
 \begin_layout Section
+
+\lang english
 Εισαγωγή
 \end_layout
 
 \begin_layout Standard
+
+\lang english
 Τα προγραμματιστικά εργαλεία που μας επιτρέπουν να εκμεταλλευόμαστε τις
  δυνατότητες παράλληλης επεξεργασίας των σύγχρονων πολυεπεξεργαστών και
  συστοιχιών (clusters) επεξεργαστών σχεδιάζονται βάσει μιας ομάδας μοντέλων
@@ -114,6 +165,7 @@
 \begin_inset CommandInset citation
 LatexCommand cite
 key "parprogmodel"
+literal "true"
 
 \end_inset
 
@@ -121,6 +173,7 @@ key "parprogmodel"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "sharedvsdistributed"
+literal "true"
 
 \end_inset
 
@@ -132,6 +185,8 @@ key "sharedvsdistributed"
 \end_layout
 
 \begin_layout Standard
+
+\lang english
 Την ίδια στιγμή, η επιλογή του μοντέλου έχει θεμελιώδη ρόλο στις αποφάσεις
  που λαμβάνονται κατά το σχεδιασμό παράλληλων υπολογιστικών συστημάτων μεγάλης
  κλίμακας, στον κλάδο της υπολογιστικής υψηλών αποδόσεων (high performance
@@ -139,6 +194,7 @@ key "sharedvsdistributed"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "hpcdesign"
+literal "true"
 
 \end_inset
 
@@ -150,6 +206,8 @@ key "hpcdesign"
 \end_layout
 
 \begin_layout Standard
+
+\lang english
 Τα μοντέλα παράλληλου προγραμματισμού χωρίζονται σε άξονες βάσει του τρόπου
  (εάν υφίσταται) που επικοινωνούν μεταξύ τους οι παράλληλες διεργασίες,
  και βάσει της φύσης των προβλημάτων που επιδιώκεται να λυθούν με παράλληλη
@@ -157,6 +215,7 @@ key "hpcdesign"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "parprogmodel"
+literal "true"
 
 \end_inset
 
@@ -168,6 +227,8 @@ key "parprogmodel"
 \end_layout
 
 \begin_layout Standard
+
+\lang english
 Η παρούσα εργασία κινείται στον πρώτο άξονα, παρουσιάζοντας τα βασικά μοντέλα
  επικοινωνίας μεταξύ διεργασιών, και ειδικότερα μελετώντας τα κλασικά προγραμματ
 ιστικά εργαλεία για την επίλυση προβλημάτων συγχρονισμού που ενυπάρχουν
@@ -176,22 +237,256 @@ key "parprogmodel"
 \end_layout
 
 \begin_layout Section
+
+\lang english
+Παραλληλία ή ταυτοχρονισμός;
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Η παραλληλία (parallelism) και ο ταυτοχρονισμός (concurrency) είναι δύο
+ διακριτές έννοιες συναφούς περιεχομένου που συχνά συγχέονται.
+ Παρότι δεν υπάρχει πλήρης συμφωνία στο πώς ακριβώς διακρίνονται μεταξύ
+ τους οι δυο όροι, για πολλούς συγγραφείς οι παραπάνω όροι επιδέχονται τους
+ εξής ορισμούς:
+\end_layout
+
+\begin_layout Itemize
+
+\lang english
+Στην ταυτόχρονη υπολογιστική, πολλές εργασίες του ίδιου προγράμματος μπορούν
+ να είναι σε εξέλιξη οποιαδήποτε στιγμή.
+\end_layout
+
+\begin_layout Itemize
+
+\lang english
+Στην παράλληλη υπολογιστική, πολλές εργασίες ενός προγράμματος συνεργάζονται
+ στενά για την επίλυση ενός προβλήματος.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "pacheco"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Για μια εξήγηση σε πιο πρακτικούς όρους, κρίνεται σκόπιμο να εξεταστεί το
+ πώς τα παραπάνω είδη υπολογιστικής σχετίζονται.
+ Ο ταυτοχρονισμός εργασιών μπορεί να επιτευχθεί με διάφορους τρόπους.
+ Ο ένας είναι η παράλληλη εκτέλεση των εργασιών με χρήση πολλαπλών κεντρικών
+ μονάδων επεξεργασίας (CPU).
+ Ένας δέυτερος είναι μέσω της εναλλαγής εργασιών (task switching), που στηρίζετα
+ι στην περιοδική, ή βάσει κανόνων, παύση εκτέλεσης εργασιών για το διαμοιρασμό
+ του χρόνου (timesharing) της ίδιας επεξεργαστικής μονάδας μεταξύ πολλών
+ σειριακών εργασιών που εκτελούνται σε αυτή.
+ Εάν τα χρονικά μερίδια είναι αρκετά μικρά, η εκτέλεση των εργασιών δύναται
+ για τους σκοπούς του χρήστη να ισοδυναμεί με αυτή που θα επιτυγχανόταν
+ σε μια γνησίως παράλληλή υπολογιστική διάταξη.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "tanenbaum"
+literal "false"
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Ένας ακόμη όρος που ταιριάζει να αναφερθεί σε αυτό το πλαίσιο είναι αυτός
+ της κατανεμημένης υπολογιστικής.
+ Ο όρος αυτός περιγράφει συστήματα όπου ίσως υπάρχει αναγκαιότητα συνεργασίας
+ μεταξύ διαφορετικών προγραμμάτων για την επίλυση ενός προβλήματος.
+ Στην πηγή αναφέρονται τα εξής:
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset Quotes fld
+\end_inset
+
+Δεν υπάρχει κάποια ξεκάθαρη διάκριση μεταξύ παράλληλων και κατανεμημένων
+ προγραμμάτων, αλλά ένα παράλληλο πρόγραμμα συνήθως εκτελεί πολλές εργασίες
+ ταυτόχρονα σε πυρήνες που βρίσκονται κοντά ο ένας στον άλλο και οι οποίοι
+ είτε μοιράζονται την ίδια μνήμη είτε συνδέονται μεταξύ τους μέσω ενός δικτύου
+ πολύ υψηλής ταχύτητας.
+ Από την άλλη, τα κατανεμημένα προγράμματα συνήθως είναι πιο 
+\begin_inset Quotes eld
+\end_inset
+
+χαλαρά συζευγμένα
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Οι εργασίες μπορούν να εκτελούνται σε πολλούς υπολογιστές που βρίσκονται
+ σε μεγάλες αποστάσεις ο ένας από τον άλλον, και οι ίδιες οι εργασίες συχνά
+ διεκπεραιώνονται από προγράμματα που αναπτύχθηκαν ανεξάρτητα.
+\begin_inset Quotes frd
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "pacheco"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+
+\lang english
 Επικοινωνία μέσω κοινόχρηστης μνήμης (shared memory)
 \end_layout
 
 \begin_layout Standard
-Στην παράλληλη ή ταυτόχρονη (concurrent) υπολογιστική, ένας πολύ φυσικός
- και προγραμματιστικά βολικός τρόπος για την επίτευξη επικοινωνίας μεταξύ
- διεργασιών, καθώς και για την αποφυγή σπατάλης χώρου από πολλαπλά όμοια
- αντίγραφα δεδομένων, είναι η χρήση ενός κοινού χώρου μνήμης από πολλές
- διεργασίες.
- Στο παρελθόν, ήταν διαδεδομένα τα υπολογιστικά συστήματα πολυεπεξεργαστών
+
+\lang english
+Στην παράλληλη ή ταυτόχρονη υπολογιστική, ένας πολύ φυσικός και προγραμματιστικά
+ βολικός τρόπος για την επίτευξη επικοινωνίας μεταξύ εργασιών, καθώς και
+ για την αποφυγή σπατάλης χώρου από πολλαπλά όμοια αντίγραφα δεδομένων,
+ είναι η χρήση ενός κοινού χώρου μνήμης από πολλές εργασίες.
+ Κατά τον προγραμματισμό βάσει αυτού του μοντέλου, προκύπτει μια σειρά προβλημάτ
+ων συγχρονισμού των εργασιών, για τη διαχείριση των οποίων έχουν αναπτυχθεί,
+ και συνεχίζουν να αναπτύσσονται, πολλαπλές παραλλαγές δομών που συνολικά
+ ονομάζονται 
+\begin_inset Quotes eld
+\end_inset
+
+αρχέγονες δομές συγχρονισμού
+\begin_inset Quotes erd
+\end_inset
+
+ (synchronisation schemes/primitives).
+\end_layout
+
+\begin_layout Subsection
+
+\lang english
+Δομές συγχρονισμού νημάτων/διεργασιών
+\end_layout
+
+\begin_layout Subsubsection*
+
+\lang english
+Barrier
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Είναι μια εύκολα υλοποιήσιμη δομή που αναγκάζει τα διερχόμενα νήματα σε
+ αναμονή, μέχρι τα υπόλοιπα νήματα να φτάσουν στο ίδιο σημείο εκτέλεσης.
+ Αυτό πραγματοποιείται με διάφορους τρόπους, ένας εκ των οποίων είναι η
+ καταμέτρηση των νημάτων που έχουν φτάσει στη δομή, με κατ'επανάληψιν έλεγχο
+ για το αν έχει συμπληρωθεί ο αριθμός των νημάτων υπό εκτέλεση.
+\end_layout
+
+\begin_layout Subsubsection*
+
+\lang english
+Spinlock
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Υλοποιείται επίσης εύκολα, κρατάει τα νήματα σε αναμονή μέχρι να διέλθει
+ το νήμα προτεραιότητας, που έχει την ευθύνη να ξεκλειδώσει τη σημαία (flag)
+ που θα επιτρέψει σε κάποιο επόμενο νήμα να τη διεκδικήσει αποκλειστικά
+ (για το ζήτημα της προτεραιότητας μεταξύ νημάτων σε αναμονή, δείτε το κεφάλαιο
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Κουρά-με-ουρά"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+ Η αδυναμία της εν λόγω δομής έγκειται στο ότι για την αναμονή του νήματος
+ δεσμεύεται ένας πυρήνας επεξεργασίας, καθώς αυτή επιτυγχάνεται μέσω επαναλαμβαν
+όμενης εκτέλεσης του ελέγχου κατάστασης της σημαίας.
+\end_layout
+
+\begin_layout Subsubsection*
+
+\lang english
+Σημαφόρος (Semaphore, Mutex)
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Ο σημαφόρος, συγκεκριμένα στη δυαδική του παραλλαγή (mutex) ομοιάζει λειτουργικά
+ του spinlock.
+ Η υλοποίηση του είναι πιο σύνθετη, καθώς αξιοποιεί τις δυνατότητες του
+ λειτουργικού συστήματος προκειμένου να αποδεσμεύει προσωρινά τους πυρήνες
+ επεξεργασίας από νήματα που βρίσκονται σε αναμονή.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Η απρόσεκτη χρήση των παραπάνω δομών για την επίτευξη συγχρονισμού μπορεί
+ εκ νέου να δημιουργήσει προβλήματα, η αποφυγή των οποίων επιδεικνύεται
+ στην πράξη στην εφαρμογή της επόμενης ενότητας.
+ Ονομαστικά, τα πιο συνήθη κρίσιμα από αυτά είναι το νεκρό ή ζωντανό κλείδωμα
+ (Deadlock, Livelock) και η λιμοκτονία.
+ Μικρά ή μεγάλα προβλήματα επιδόσεων του κώδικα είναι, ακόμη, πολύ εύκολο
+ να προκύψουν.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "primitives"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+
+\lang english
+Συστήματα μη ομοιογενούς πρόσβασης μνήμης (NUMA)
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Στο παρελθόν, ήταν διαδεδομένα τα υπολογιστικά συστήματα πολυεπεξεργαστών
  που διέθεταν αληθινά κοινόχρηστη μνήμη, με την οποία επικοινωνούσαν μέσω
  κοινού διαύλου.
  Σήμερα, η πραγματικότητα είναι διαφορετική.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "sharedvsdistributed"
+literal "true"
 
 \end_inset
 
@@ -202,11 +497,9 @@ key "sharedvsdistributed"
 
 \end_layout
 
-\begin_layout Subsection
-Συστήματα μη ομοιογενούς πρόσβασης μνήμης (NUMA)
-\end_layout
-
 \begin_layout Standard
+
+\lang english
 Με την αύξηση του πλήθους και της ταχύτητας των κεντρικών μονάδων επεξεργασίας
  (CPU) των πολυεπεξεργαστών, η ανάγκη διαχείρισης του προβλήματος συμφόρησης
  (bottleneck) von Neumann επέβαλε αλλαγή στο μοντέλο επικοινωνίας των κεντρικών
@@ -217,6 +510,7 @@ key "sharedvsdistributed"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "neumannbottleneck"
+literal "true"
 
 \end_inset
 
@@ -235,6 +529,7 @@ key "neumannbottleneck"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "numa"
+literal "true"
 
 \end_inset
 
@@ -244,6 +539,7 @@ key "numa"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "openmpnuma"
+literal "true"
 
 \end_inset
 
@@ -252,6 +548,7 @@ key "openmpnuma"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "pthreadnuma"
+literal "true"
 
 \end_inset
 
@@ -265,10 +562,14 @@ key "pthreadnuma"
 \end_layout
 
 \begin_layout Subsection
+
+\lang english
 Υβριδικά παράλληλα συστήματα
 \end_layout
 
 \begin_layout Standard
+
+\lang english
 Τα αναφερθέντα χαρακτηριστικά των εργαλείων προγραμματισμού που στηρίζονται
  στην αφαίρεση μιας εικονικά ενιαίας κοινόχρηστης μνήμης, συντελούν στο
  αποτέλεσμα η χρήση τους να περιορίζεται σε υπολογιστικά συστήματα μικρής
@@ -283,6 +584,7 @@ key "pthreadnuma"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "hybrid"
+literal "true"
 
 \end_inset
 
@@ -290,10 +592,14 @@ key "hybrid"
 \end_layout
 
 \begin_layout Section
+
+\lang english
 Επικοινωνία μεσω μηνυμάτων (message passing)
 \end_layout
 
 \begin_layout Standard
+
+\lang english
 Ο κλάδος του παραλληλισμού κατανεμημένης μνήμης είναι ευρύτατος και εσχάτως
  ραγδαία εξελισσόμενος.
  Καθώς δεν αποτελεί κεντρικό θέμα αυτής της εργασίας, θα καλυφθεί σύντομα
@@ -313,12 +619,22 @@ key "hybrid"
 \begin_inset Quotes erd
 \end_inset
 
- περιγράφεται το μοντέλο όπου μια μονάδα επεξεργασίας εκτελεί ένα έργο σε
- έναν τοπικό χώρο μνήμης, το αποτέλεσμα του οποίου στη συνέχεια επικοινωνείται
- μέσω μηνυμάτων προς μια απομακρυσμένη μονάδα επεξεργασίας.
+ (να μη συγχέεται με τον όρο 
+\begin_inset Quotes eld
+\end_inset
+
+κατανεμημένη υπολογιστική
+\begin_inset Quotes erd
+\end_inset
+
+ που εισήχθη παραπάνω) περιγράφεται το μοντέλο όπου μια μονάδα επεξεργασίας
+ εκτελεί ένα έργο σε έναν τοπικό χώρο μνήμης, το αποτέλεσμα του οποίου στη
+ συνέχεια επικοινωνείται μέσω μηνυμάτων προς μια απομακρυσμένη μονάδα επεξεργασί
+ας.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "sharedvsdistributed"
+literal "true"
 
 \end_inset
 
@@ -329,6 +645,7 @@ key "sharedvsdistributed"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "mpip2p"
+literal "true"
 
 \end_inset
 
@@ -337,6 +654,7 @@ key "mpip2p"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "msghandler"
+literal "true"
 
 \end_inset
 
@@ -348,10 +666,14 @@ key "msghandler"
 \end_layout
 
 \begin_layout Subsection
+
+\lang english
 Το πρότυπο MPI
 \end_layout
 
 \begin_layout Standard
+
+\lang english
 Στο προγραμματιστικό μοντέλο επικοινωνίας μέσω μηνυμάτων, ένα πρόγραμμα
  που εκτελείται σε ένα ζεύγος κεντρικής μονάδας επεξεργασίας (CPU) και μνήμης
  ονομάζεται επεξεργαστής (processor).
@@ -361,6 +683,7 @@ key "msghandler"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "mpiterm"
+literal "true"
 
 \end_inset
 
@@ -381,6 +704,7 @@ key "mpiterm"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "mpiflex1,mpiflex2,mpispecsdominance"
+literal "true"
 
 \end_inset
 
@@ -392,6 +716,7 @@ key "mpiflex1,mpiflex2,mpispecsdominance"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "proclets"
+literal "true"
 
 \end_inset
 
@@ -409,6 +734,7 @@ key "proclets"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "mpispecsdominance"
+literal "true"
 
 \end_inset
 
@@ -421,6 +747,7 @@ key "mpispecsdominance"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "mpisucks,hadoop,julia"
+literal "true"
 
 \end_inset
 
@@ -432,10 +759,14 @@ key "mpisucks,hadoop,julia"
 \end_layout
 
 \begin_layout Subsection
+
+\lang english
 Υπολογιστική γενικού σκοπού σε GPU (GPGPU)
 \end_layout
 
 \begin_layout Standard
+
+\lang english
 Οι μονάδες επεξεργασίας γραφικών (GPU) κατασκευάζονται με γνώμονα την επίλυση
  προβλημάτων γραφικής απεκόνισης και επεξεργασίας εικόνων.
  Η φύση αυτών των προβλημάτων έχει προσανατολίσει το σχεδιασμό των GPUs
@@ -444,6 +775,7 @@ key "mpisucks,hadoop,julia"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "dataparallel"
+literal "true"
 
 \end_inset
 
@@ -462,6 +794,7 @@ key "dataparallel"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "gpudrawback"
+literal "true"
 
 \end_inset
 
@@ -479,6 +812,7 @@ key "gpudrawback"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "gpgpuhistory"
+literal "true"
 
 \end_inset
 
@@ -488,6 +822,7 @@ key "gpgpuhistory"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "gpgpuapplications"
+literal "true"
 
 \end_inset
 
@@ -508,6 +843,7 @@ key "gpgpuapplications"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "sharedvsdistributed"
+literal "true"
 
 \end_inset
 
@@ -515,301 +851,1608 @@ key "sharedvsdistributed"
 \end_layout
 
 \begin_layout Part
-Προβλήματα συγχρονισμού σε συστήματα κοινόχρηστης μνήμης
+
+\lang english
+sleepingbbq.cpp
+\lang greek
+: Μια 
+\begin_inset Quotes eld
+\end_inset
+
+ταυτόχρονη
+\begin_inset Quotes erd
+\end_inset
+
+ επίλυση δύο κλασικών προβλημάτων συγχρονισμού διεργασιών
 \end_layout
 
 \begin_layout Section
-Αρχέγονες Δομές Συγχρονισμού
+
+\lang english
+Εισαγωγή
 \end_layout
 
 \begin_layout Standard
-Κοινόχρηστη μνήμη = Συνθήκες ανταγωνισμού, προβλήματα συντονισμού τύπου
- bounded buffer -> Αμοιβαίος αποκλεισμός
+
+\lang english
+Σε αυτή την ενότητα παρουσιάζεται η μελέτη μου πάνω στα κλασικά προβλήματα
+ συγχρονισμού Sleeping Barber και Producer-Consumer.
+ Θεώρησα οφέλιμο να δοκιμάσω να γράψω ένα πρόγραμμα σε γλώσσα C++ με pthreads
+ με μια λύση για κάθε πρόβλημα, προκειμένου να θεμελιώσω καλύτερα την κατανόηση
+ μου επί των θεμάτων.
+ Στην πορεία, βρήκα μεγαλύτερο ενδιαφέρον στην προσπάθεια ταυτόχρονης λύσης
+ και των δύο προβλημάτων σε ένα πρόγραμμα.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "sleepingbbq"
+literal "false"
+
+\end_inset
+
+
 \end_layout
 
-\begin_layout Subsection
-Spinlock
-\end_layout
+\begin_layout Standard
 
-\begin_layout Subsection
-Barrier
-\end_layout
-
-\begin_layout Subsection
-Semaphore, Mutex
+\lang english
+Στο παρόν, θα προσπαθήσω να κάνω μια κριτική παρουσίαση των προβλημάτων
+ και των λύσεων που επέλεξα να υλοποιήσω γι'αυτά, αποφεύγοντας να επαναλάβω
+ όσα παρουσιάζονται επαρκώς στα σχετικά λήμματα της wikipedia.
+ Θα γίνει, ωστόσο, εκτενής αναφορά σε αυτά, καθώς και σε άλλες ελεύθερες
+ πηγές.
 \end_layout
 
 \begin_layout Section
-Dining philosophers
+
+\lang english
+Σύγκριση και θεωρητική οριοθέτηση
 \end_layout
 
 \begin_layout Standard
-Παρουσίαση του προβλήματος (εισαγωγή όρων deadlock, resource starvation),
- λύση με μέθοδο arbitrator για επίδειξη barriers.
- Επιλογή δυαδικού σηματοφορέα αντί mutex, για συνοχή.
+
+\lang english
+Το πρόβλημα Παραγωγού-Καταναλωτή (Producer-Consumer)
+\begin_inset CommandInset citation
+LatexCommand cite
+key "prodcon"
+literal "true"
+
+\end_inset
+
+, ή αλλιώς Bounded Buffer problem, αφορά τη διαφορά στο ρυθμό εισαγωγής
+ και αφαίρεσης δεδομένων (throughput) σε έναν περιορισμένο χώρο μνήμης,
+ από τον παραγωγό και τον καταναλωτή αντίστοιχα.
+ Είναι λοιπόν, στη βάση του, ένα πρόβλημα συντονισμού του έργου των δυο
+ νημάτων, ούτως ώστε να μην υπάρχουν λάθος αιτήματα προς τη μνήμη.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Το πρόβλημα του Κοιμώμενου Κουρέα (Sleeping Barber)
+\begin_inset CommandInset citation
+LatexCommand cite
+key "sleepbarb"
+literal "true"
+
+\end_inset
+
+ αφορά την αποφυγή συνθηκών ανταγωνισμού (race conditions) μεταξύ του κουρέα,
+ που αφαιρεί πελάτες από μια περιορισμένου μεγέθους αίθουσα αναμονής, και
+ των πελατών που προσθέτουν, ας πούμε, τους εαυτούς τους, σε αυτήν.
+ Στη βάση του αφορά, λοιπόν, την εξασφάλιση ασφάλειας νημάτωσης (thread
+ safety)
+\begin_inset CommandInset citation
+LatexCommand cite
+key "threadsafe"
+literal "true"
+
+\end_inset
+
+ σε εργασίες που απαιτούν πρόσβαση στο χώρο μνήμης που αντιπροσωπεύει την
+ αίθουσα αναμονής.
+ Έτσι, αποφεύγεται ο κίνδυνος υλοποιούμενες λύσεις να οδηγούν σε νεκρό κλείδωμα
+ (deadlock).
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Από τις παραπάνω παραγράφους γίνεται ξεκάθαρο ότι τα δύο προβλήματα, παρότι
+ φαινομενικά όμοια, αφορούν διαφορετικά ζητήματα συγχρονισμού νημάτων/ διεργασιώ
+ν.
+ Εν τούτοις, στις περισσότερες περιπτώσεις, τα δύο σύνολα ζητημάτων τείνουν
+ να χρήζουν ταυτόχρονης διαχείρισης.
+ Γι'αυτό το λόγο, επέλεξα να μελετήσω τα προβλήματα γράφοντας ένα πρόγραμμα
+ και για τα δύο.
 \end_layout
 
 \begin_layout Section
-Readers-writers
+Υλοποίηση
+\end_layout
+
+\begin_layout Subsection
+
+\lang english
+Κουρά με ουρά
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Κουρά-με-ουρά"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-Παρουσίαση και λύση του προβλήματος, με προτίμηση στην απλούστερη εκδοχή
- όπου δίνεται αφορμή για αμοιβαίο αποκλεισμό με χρήση spinlock.
- Εάν αυτό αποδειχτεί δύσκολο, λύση της απλούστερης εκδοχής (producer-consumer
- equivalent) με χρήση monitor.
- Στην τελευταία περίπτωση, θα προηγηθεί κάλυψη της εν λόγω δομής στη θεωρία.
-\end_layout
 
-\begin_layout Part
-Μεταφορά θερμότητας σε δισδιάστατο χώρο: ένα πρόβλημα παράλληλου προγραμματισμού
-\end_layout
+\lang english
+Η απλούστερη λύση για το πρόβλημα του κοιμώμενου κουρέα, όπως παρουσιάζεται
+ στη wikipedia, μπορεί να οδηγήσει σε λιμοκτονία (starvation) ενός νήματος
+ πελάτη.
+ Για αυτό ευθύνεται το γεγονός ότι, ανάλογα με τις προδιαγραφές των αρχέγονων
+ δομών συγχρονισμού (synchronization primitives) που παρέχονται με την εκάστοτε
+ βιβλιοθήκη, μπορεί η προτεραιότητα των νημάτων να εξασφαλίζεται με διαφορετικού
+ς τρόπους ή να αφήνεται απροσδιόριστη 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "lilbookosem"
+literal "true"
 
-\begin_layout Standard
-Παρουσίαση του προβλήματος παράλληλου υπολογισμού της μεταφοράς θερμότητας
- σε δισδιάστατο χώρο.
- Μελέτη της παράλληλης λύσης με προγραμματισμό κατανεμημένης μνήμης (MPI),
- λύση με προγραμματισμό κοινόχρηστης μνήμης (pthreads).
-\end_layout
+\end_inset
 
-\begin_layout Standard
-Τι προκύπτει από τη σύγκριση των δυο λύσεων ως προς την απόδοση και την
- απλότητα υλοποίησης; Ποια γενικά κριτήρια για την επιλογή ανάμεσα στους
- δύο τύπους παράλληλου προγραμματισμού μπορούν να εξαχθούν από τη μελέτη
- των λύσεων του συγκεκριμένου προβλήματος;
+.
 \end_layout
 
 \begin_layout Standard
-Η εσωτερική δομή της ενότητας αυτής θα οριστεί αργότερα.
+
+\lang english
+Αυτό με οδήγησε στη χρήση C++ προκειμένου να εκμεταλλευτώ τη δομή STL Queue.
+ Πρόκειται για μια templated δομή, που ήλπιζα να χρησιμοποιήσω εισάγοντας
+ σε αυτήν κλειδωμένους σημαφόρους για κάθε νεοεισερχόμενο νήμα-πελάτη.
+ Καθώς, όμως, ο τύπος δεδομένων sem_t, που αντιπροσωπεύει το σημαφόρο της
+ βιβλιοθήκης <semaphore.h> , δεν επιδέχεται συμβατικό χειρισμό (στα πρότυπα
+ π.χ.
+ του τύπου int), δεν βρήκα κάποιον τρόπο να το πετύχω.
+ Αναγκάστηκα, τελικά, να στηριχτώ σε μια, φαινομενικά, μη αποδοτική, ad
+ hoc υλοποίηση ουράς σημαφόρων.
+ Η έμπνευση γι'αυτήν προήλθε από το πολύτιμο The Little Book of Semaphores
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "lilbookosem"
+literal "true"
+
+\end_inset
+
+.
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+int main(int argc, char* argv[]){
+\end_layout
+
+\begin_layout Plain Layout
+
+  ...
+\end_layout
+
+\begin_layout Plain Layout
+
+  int numChairs = atoi(argv[1]);
+\end_layout
+
+\begin_layout Plain Layout
+
+  waitingRoomQueue = new sem_t[numChairs+1];
+\end_layout
+
+\begin_layout Plain Layout
+
+  sem_init(&seatsAvailable, 0, numChairs);
+\end_layout
+
+\begin_layout Plain Layout
+
+  ...
+\end_layout
+
+\begin_layout Plain Layout
+
+  for(int i = 0; i < numChairs + 1; i++){
+\end_layout
+
+\begin_layout Plain Layout
+
+    sem_init(&waitingRoomQueue[i], 0, 1);
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+void *customer(void *numChairs){
+\end_layout
+
+\begin_layout Plain Layout
+
+  int* number_of_chairs = (int*)numChairs;
+\end_layout
+
+\begin_layout Plain Layout
+
+  int positionInQueue{*number_of_chairs - 1};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  while(1){
+\end_layout
+
+\begin_layout Plain Layout
+
+    customerMessage(id, arrive_at_barbershop); 
+\end_layout
+
+\begin_layout Plain Layout
+
+    if(sem_trywait(&seatsAvailable)==-1){
+\end_layout
+
+\begin_layout Plain Layout
+
+      customerMessage(id, waiting_room_full);
+\end_layout
+
+\begin_layout Plain Layout
+
+      }
+\end_layout
+
+\begin_layout Plain Layout
+
+        
+\end_layout
+
+\begin_layout Plain Layout
+
+    else{            
+\end_layout
+
+\begin_layout Plain Layout
+
+      customerMessage(id, enter_waiting_room);
+\end_layout
+
+\begin_layout Plain Layout
+
+      while(positionInQueue > 0){
+\end_layout
+
+\begin_layout Plain Layout
+
+      sem_wait(&waitingRoomQueue[positionInQueue]);
+\end_layout
+
+\begin_layout Plain Layout
+
+      sem_post(&waitingRoomQueue[positionInQueue+1]);
+\end_layout
+
+\begin_layout Plain Layout
+
+      positionInQueue--;
+\end_layout
+
+\begin_layout Plain Layout
+
+      }
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    sem_wait(&barberChairEmpty);
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    sem_post(&waitingRoomQueue[1]);
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+  }  
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Παραπάνω, η sem_trywait δοκιμάζει να μειώσει το σημαφόρο seatsAvailable.
+ Εάν επιτύχει, που σημαίνει ότι ο σημαφόρος ήταν αρχικά μεγαλύτερος του
+ μηδέν, επιστρέφει 0 (επιτυχία) και η εκτέλεση του προγράμματος συνεχίζει
+ απορρίπτοντας τη συνθήκη.
+ Σημειώστε ότι, σε αυτήν την περίπτωση, ο σημαφόρος μεταβλήθηκε κατά τον
+ έλεγχο, παρότι ο έλεγχος απέτυχε.
+ Αυτό είναι σκόπιμο.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Εάν η sem_trywait συναντήσει το σημαφόρο seatsAvailable σε κατάσταση που
+ δε δύναται να μειωθεί (0), η sem_trywait επιστρέφει -1 και τερματίζει,
+ σε αντίθεση με την sem_wait, που στην ίδια περίπτωση θα έθετε το νήμα σε
+ αναμονή.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "trywait"
+literal "true"
+
+\end_inset
+
+ Ακολούθως, εισέρχεται στη συνθήκη, τυπώνει μήνυμα αποχώρησης του πελάτη
+ λόγω συμφόρησης της αίθουσας αναμονής, και φτάνει στο τέλος της while για
+ να τρέξει από την αρχή, με νέο id πελάτη (δείτε το επόμενο block κώδικα).
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Το waitingRoomQueue είναι ένας πίνακας σημαφόρων μεγέθους numChairs +1 που
+ αρχικοποιούνται με 1.
+ Ο σημαφόρος waitingRoomQueue[numChairs] αυξάνεται σε κάθε εκτέλεση του
+ σεναρίου else κατά 1, χωρίς ποτέ να μειωθεί.
+ Αυτή είναι μια αδυναμία που δεν έχω σκεφτεί πώς θα επιλύσω, δε φαίνεται
+ να δημιουργεί ωστόσο πρόβλημα βραχυπρόθεσμα.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Η τιμή του σημαφόρου waitingRoomQueue[0] δεν μεταβάλλεται σε κανένα σημείο
+ του προγράμματος.
+ Αφέθηκε για λόγους διαισθητικής ομαλότητας.
+ Η αναμονή του κορυφαίου πελάτη της ουράς, στην πραγματικότητα εξαρτάται
+ από το σημαφόρο barberChairEmpty.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+
+\lang english
+Ανταγωνισμός νημάτων παραγωγής πελατών
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Στη wikipedia, η λύση του χαρακτηριστικού προβλήματος του κοιμώμενου κουρέα,
+ παρουσιάζεται σε συνθήκη ανταγωνισμού μεταξύ κουρέα και πελάτη για την
+ πρόσβαση στο χώρο μνήμης που αντιπροσωπεύει την αίθουσα αναμονής.
+ Στη δική μου υλοποίηση ανέβαλα αυτό το ζήτημα, αναθέτοντας στον πελάτη
+ τα καθήκοντα προσθαφαίρεσης του εαυτού του στην ουρά αναμονής.
+ Προχώρησα σε αυτήν τη διασκευή με την προοπτική να κάνω τη ζωή μου ευκολότερη
+ σε μελλοντική υλοποίηση όπου θα προσθέσω πολλαπλά νήματα κουρέων.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Το ίδιο ζήτημα ανταγωνισμού για την πρόσβαση εμφανίστηκε ξανά όταν προσέθεσα
+ πολλά νήματα-πελάτες.
+ Η υλοποίηση της wikipedia προσομοιώνει πολλαπλούς πελάτες στηριζόμενη σε
+ έναν ατέρμονο βρόχο του ίδιου νήματος.
+ Θεώρησα αυτού του είδους την προσομοίωση ελάχιστα ρεαλιστική και τεχνικά
+ απλουστευτική, και γι'αυτό επέλεξα να πολλαπλασιάσω τα νήματα-πελάτες,
+ που ωστόσο άφησα να λειτουργούν σε ατέρμονα βρόχο.
+ Έτσι, η λύση της wikipedia για το συγχρονισμό κουρέα - πελατών, εμφανίζεται
+ στη δική μου υλοποίηση μεταξύ κουρέα και 
+\begin_inset Quotes eld
+\end_inset
+
+νημάτων παραγωγής πελατών
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Η επιλογή αυτού του νέου ονόματος ίσως γίνει πιο κατανοητή εαν ληφθεί υπόψιν
+ ο τρόπος που επέλεξα να χειριστώ την ονοματοδοσία κάθε πελάτη.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+//guards critical section where customer() pulls 
+\end_layout
+
+\begin_layout Plain Layout
+
+//a unique id from global counter new_id.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+pthread_mutex_t id_lock; 
+\end_layout
+
+\begin_layout Plain Layout
+
+int new_id{1};  
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+void *customer(...){
+\end_layout
+
+\begin_layout Plain Layout
+
+  ...
+\end_layout
+
+\begin_layout Plain Layout
+
+  while(1){
+\end_layout
+
+\begin_layout Plain Layout
+
+    pthread_mutex_lock(&id_lock); //fetch unique id for             
+\end_layout
+
+\begin_layout Plain Layout
+
+    id = new_id;	          //customer
+\end_layout
+
+\begin_layout Plain Layout
+
+    new_id++;
+\end_layout
+
+\begin_layout Plain Layout
+
+    pthread_mutex_unlock(&id_lock);
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  ...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Αξίζει να σημειωθεί ότι, στη δική μου προσέγγιση, προκύπτει ένα πρόβλημα
+ από την ελάττωση του αριθμού ενεργών νημάτων παραγωγής πελατών, όποτε κάποιο
+ από αυτά εισέρχεται στην αίθουσα αναμονής.
+ Αυτή η αδυναμία γίνεται ολότελα φανερή εφόσον οριστεί μεγάλος αριθμός θέσεων
+ στην αίθουσα αναμονής από το χρήστη (απαιτείται ως όρισμα κατά την εκτέλεση).
+ Καθώς ο αριθμός νημάτων παραγωγής πελατών περιορίζεται στα 5, υπάρχει το
+ ενδεχόμενο όλα τα νήματα να τεθούν σε αναμονή μέσα στην αίθουσα αναμονής.
+ Σε μια τέτοια περίπτωση, δε θα υπάρχουν αναχωρήσεις νέων πελατών μέχρι
+ να ελευθερωθεί το κορυφαίο νήμα από τον κουρέα, για να ξαναμπεί στο βρόχο.
+ Δεν μπόρεσα να σκεφτώ έναν ικανοποιητικό τρόπο να αντιμετωπίσω το πρόβλημα,
+ προς επίτευξη μεγαλύτερου ρεαλισμού, χωρίς να ξεφύγω πολύ από τις τεχνικές
+ προδιαγραφές του προβλήματος.
+ Το άφησα, λοιπόν, ως έχει.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+void *customer(void *numChairs){
+\end_layout
+
+\begin_layout Plain Layout
+
+  ...
+\end_layout
+
+\begin_layout Plain Layout
+
+  while(1){
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+    else{
+\end_layout
+
+\begin_layout Plain Layout
+
+      ...
+\end_layout
+
+\begin_layout Plain Layout
+
+      sem_wait(&barberChairEmpty);
+\end_layout
+
+\begin_layout Plain Layout
+
+      pthread_mutex_lock(&room_state_change);
+\end_layout
+
+\begin_layout Plain Layout
+
+        customerMessage(id, check_on_barber);
+\end_layout
+
+\begin_layout Plain Layout
+
+        sem_post(&waitingRoomQueue[1]);
+\end_layout
+
+\begin_layout Plain Layout
+
+        sem_post(&seatsAvailable);
+\end_layout
+
+\begin_layout Plain Layout
+
+        sem_post(&barberPillow);
+\end_layout
+
+\begin_layout Plain Layout
+
+      pthread_mutex_unlock(&room_state_change);
+\end_layout
+
+\begin_layout Plain Layout
+
+      
+\end_layout
+
+\begin_layout Plain Layout
+
+      sem_wait(&seatBelt);
+\end_layout
+
+\begin_layout Plain Layout
+
+      customerMessage(id, leave_successfully);
+\end_layout
+
+\begin_layout Plain Layout
+
+      sem_post(&barberChairEmpty);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Παραπάνω, βλέπουμε πώς κινείται το κορυφαίο στην ουρά νήμα, μόλις ελευθερωθεί
+ από το σημαφόρο barberChairEmpty, που θα αυξήσει ο φρεσκοκουρεμένος πελάτης
+ πριν φτάσει στο τέλος της while και επιστρέψει για επανάληψη με νέο id
+ (δείτε παραπάνω).
+ Η μόνη παρέμβαση του νήματος - κουρέα είναι για την απελευθέρωση του νήματος
+ παραγωγής πελατών μόλις αυτό φτάσει στο sem_wait(&seatBelt).
+\end_layout
+
+\begin_layout Subsection
+
+\lang english
+Το νήμα κουρέας
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Παραπάνω, συναντάμε για πρώτη φορά το σημαφόρο barberPillow.
+ Σε αυτό το σημαφόρο στηρίζεται ο συντονισμός του νήματος - κουρέα.
+ Η συνάρτηση barber είναι αρκετά απλή:
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+void *barber(void *unused){
+\end_layout
+
+\begin_layout Plain Layout
+
+  int isAsleep{-1};
+\end_layout
+
+\begin_layout Plain Layout
+
+  while(1){
+\end_layout
+
+\begin_layout Plain Layout
+
+    sem_getvalue(&barberPillow, &isAsleep);
+\end_layout
+
+\begin_layout Plain Layout
+
+    if(isAsleep == 0){
+\end_layout
+
+\begin_layout Plain Layout
+
+      std::cout<<"The barber is sleeping.
+\backslash
+n";
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+  sem_wait(&barberPillow);
+\end_layout
+
+\begin_layout Plain Layout
+
+  std::cout <<"The barber is cutting hair.
+\backslash
+n";
+\end_layout
+
+\begin_layout Plain Layout
+
+  randWait(5);
+\end_layout
+
+\begin_layout Plain Layout
+
+  std::cout <<"The barber has finished cutting hair.
+\backslash
+n";
+\end_layout
+
+\begin_layout Plain Layout
+
+  sem_post(&seatBelt);
+\end_layout
+
+\begin_layout Plain Layout
+
+  randWait(1);
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Πριν τερματίσει, ο κουρέας απελευθερώνει το νήμα παραγωγής πελατών που έχει
+ περάσει και κλειδώσει την κορυφή της ουράς (σημαφόρος barberChairEmpty).
+ Το νήμα αυτό ξεκλειδώνει με τη σειρά του το σημαφόρο barberChairEmpty,
+ πριν επιστρέψει στην αρχή του βρόχου.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Προτού ο κουρέας προλάβει να επιστρέψει στο sem_wait(&barberPillow) για
+ να κοιμηθεί, μπορεί ένα νήμα παραγωγής πελατών που βρισκόταν σε αναμονή
+ ξεκλειδώματος του barberChairEmpty, να προλάβει να αυξήσει το σημαφόρο
+ barberPillow.
+ Σε αυτή την περίπτωση το νήμα κουρέας θα μειώσει απευθείας το σημαφόρο
+ barberPillow, χωρίς να χρειαστεί να περιμένει (δηλαδή, δε θα κοιμηθεί).
+ Η συνθήκη που βλέπουμε παραπάνω καθιστά πιθανότερο το μήνυμα ύπνου να μην
+ εμφανίζεται όταν ένα νήμα παραγωγής πελατών έχει τρέξει το 
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+customerMessage(id, check_on_barber); 
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Δεν εξασφαλίζει ωστόσο κάτι τέτοιο.
+ Κρίνω ότι η χρήση σημαφόρου θα ήταν υπερβολή.
+\end_layout
+
+\begin_layout Subsection
+
+\lang english
+Τυχαιότητα και η συναρτηση randWait()
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Για να πετύχω τυχαίους χρόνους κοντά σε μια ζητούμενη διάρκεια, για κάθε
+ εργασία, (κούρεμα, προσέλευση στο κουρείο, ταχύτητα νυστάγματος), έγραψα
+ τη συνάρτηση randWait():
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+void randWait(int approxSeconds){
+\end_layout
+
+\begin_layout Plain Layout
+
+std::this_thread::sleep_for(static_cast<std::chrono::milliseconds>
+\end_layout
+
+\begin_layout Plain Layout
+
+(approxSeconds *  (rand() %  1000) ) ); 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Ο σπόρος τυχαιότητας (seed) για την rand() απαιτείται ως όρισμα κατά την
+ εκτέλεση του προγράμματος.
+ Εν τούτοις, φαντάζει άχρηστος, δεδομένου ότι ο μη ντετερμινισμός στους
+ χρονισμούς των παράλληλων νημάτων παραγωγής πελατών είναι αρκετός, ώστε
+ κάθε διαδοχική εκτέλεση, ακόμα και με τον ίδιο σπόρο τυχαιότητας, να διαφέρει
+ απο την προηγούμενη.
+\end_layout
+
+\begin_layout Subsection
+
+\lang english
+Λοιπά ζητήματα
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Για τα μηνύματα των νημάτων παραγωγής πελατών, χρειάστηκε να δημιουργήσω
+ μια νέα συναρτηση customerMessage(int id, messageType message) (το messageType
+ είναι enum).
+ Αυτό επειδή κάθε χρήση του operator<< συνιστά ξεχωριστή κλήση της cout,
+ γι'αυτό και αρκετά μηνύματα κόβονταν στην μέση λόγω cout που εκτελούνταν
+ παράλληλα σε διαφορετικά νήματα.
+ Η λύση
+\begin_inset CommandInset citation
+LatexCommand cite
+key "coutparallel"
+literal "true"
+
+\end_inset
+
+ ήταν απλή και ανευρέθηκε με αναζήτηση στο διαδίκτυο.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Γενικά, τα απαιτούμενα ορίσματα, αυτά του αριθμού των θέσεων στην αίθουσα
+ αναμονής και του σπόρου τυχαιότητας, δεν επαρκούν για να εκθέσουν εύκολα
+ όλες τις διαφορετικές συνθήκες που μπορεί να επικρατούν στο μαγαζί.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Σε έναν υπολογιστή με τις προδιαγραφές του δικού μου, για παράδειγμα, δεν
+ υπάρχει τρόπος, μέσω ορισμάτων, να αυξομειωθεί αισθητά η συχνότητα που
+ ο κουρέας βρίσκει χρόνο να πάρει έναν υπνάκο.
+ Κάτι τέτοιο μπορεί, ωστόσο, να επιτευχθεί εύκολα, αυξομειώνοντας το όρισμα
+ της συνάρτησης randWait(), όταν καλείται μεταξύ της αναχώρησης ενός νέου
+ πελάτη, και της άφιξης του στο κουρείο.
+ Μικρομετατροπές για διευκόλυνση αφήνονται για αργότερα.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Στην παρούσα κατάσταση του κώδικά, αναμενόμενα πρέπει να είναι μικρά κυρίως
+ στυλιστικά παραπτώματα όπως η έλλειψη συνοχής στην ονοματοδοσία των μεταβλητών
+ (camelCase, under_score) και στην επιλογή μεταξύ mutexes και δυαδικών σημαφόρων.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Ολόκληρο το αρχείο cpp υπάρχει στη διεύθυνση:
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/odnes/pardist/blob/master/sleepingbbq.cpp"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset Newpage pagebreak
+\end_inset
+
+
 \end_layout
 
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "parprogmodel"
+literal "true"
 
 \end_inset
 
+
+\lang english
+Wikipedia (en), Parallel programming model, Ανακτήθηκε στις 21 Μαϊου 2020
+ από:
+\begin_inset Newline newline
+\end_inset
+
+
+\lang greek
+ 
+\lang english
 https://en.wikipedia.org/wiki/Parallel_programming_model
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "sharedvsdistributed"
+literal "true"
 
 \end_inset
 
-https://stackoverflow.com/questions/36642382/main-difference-between-shared-memor
-y-and-distributed-memory#answer-36659895
+Gabriel Southern (April 16 2016) Stack Overflow, Main difference between
+ Shared memory and Distributed memory, Ανακτήθηκε στις 21 Μαϊου 2020 από:
+\begin_inset Newline newline
+\end_inset
+
+ https://stackoverflow.com/questions/36642382/main-difference-between-shared-memo
+ry-and-distributed-memory#answer-36659895
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "hpcdesign"
+literal "true"
 
 \end_inset
 
-www.shodor.org/media/content/petascale/materials/UPModules/beginnersGuideHPC/modul
-eDocument_pdf.pdf
+Rubin L, A Beginner’s Guide to High–Performance Computing, Oregon State
+ University, Ανακτήθηκε στις 21 Μαϊου 2020 από:
+\begin_inset Newline newline
+\end_inset
+
+ www.shodor.org/media/content/petascale/materials/UPModules/
+\begin_inset Newline newline
+\end_inset
+
+beginnersGuideHPC/moduleDocument_pdf.pdf
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "pacheco"
+literal "false"
+
+\end_inset
+
+Pacheco P.
+ (2011), Εισαγωγή στον Παράλληλο Προγραμματισμό, Εκδόσεις Κλειδάριθμος,
+ 34
+\end_layout
+
+\begin_layout Bibliography
+
+\lang english
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "tanenbaum"
+literal "false"
+
+\end_inset
+
+Tanenbaum A.
+ (2015), Modern Operating Systems, 4th Edition, 85, 86 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "primitives"
+literal "false"
+
+\end_inset
+
+
+\lang english
+Wikipedia (en), Synchronization (computer science), Implementation of Synchroniz
+ation, Ανακτήθηκε στις 28 Μαϊου 2020 από
+\begin_inset Newline newline
+\end_inset
+
+https://en.wikipedia.org/wiki/Synchronization_(computer_science)#Implementation_of
+_Synchronization
+\end_layout
+
+\begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "neumannbottleneck"
+literal "true"
 
 \end_inset
 
-https://en.wikipedia.org/wiki/Von_Neumann_architecture#Mitigations
+Wikipedia (en), Von Neumann architecture, Mitigations, Ανακτήθηκε στις 21
+ Μαϊου 2020 από:
+\begin_inset Newline newline
+\end_inset
+
+ https://en.wikipedia.org/wiki/Von_Neumann_architecture#Mitigations
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "numa"
+literal "true"
 
 \end_inset
 
-https://en.wikipedia.org/wiki/Non-uniform_memory_access
+Wikipedia (en), Non-uniform memory access, Ανακτήθηκε στις 21 Μαϊου 2020
+ από:
+\begin_inset Newline newline
+\end_inset
+
+ https://en.wikipedia.org/wiki/Non-uniform_memory_access
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "openmpnuma"
+literal "true"
 
 \end_inset
 
-https://stackoverflow.com/questions/11959906/openmp-and-numa-relation#answer-1197
-5593
+Hristo Iliev (August 15 2012), Stack Overflow, OpenMP and NUMA relation?,
+ Ανακτήθηκε στις 21 Μαϊου 2020 από:
+\begin_inset Newline newline
+\end_inset
+
+ https://stackoverflow.com/questions/11959906/openmp-and-numa-relation#answer-119
+75593
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "pthreadnuma"
+literal "true"
 
 \end_inset
 
-http://man7.org/linux/man-pages/man3/pthread_setaffinity_np.3.html
+man7.org, Linux Programmer's Manual, PTHREAD_SETAFFINITY_NP(3), Ανακτήθηκε
+ στις 21 Μαϊου 2020 από:
+\begin_inset Newline newline
+\end_inset
+
+ http://man7.org/linux/man-pages/man3/pthread_setaffinity_np.3.html
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "hybrid"
+literal "true"
 
 \end_inset
 
-https://software.intel.com/en-us/articles/hybrid-parallelism-parallel-distributed-
-memory-and-shared-memory-computing
+Mackay D (2016), Hybrid Parallelism: Parallel Distributed Memory and Shared
+ Memory Computing, Intel, Development Topics & Technologies, Ανακτήθηκε
+ στις 21 Μαϊου 2020 από:
+\begin_inset Newline newline
+\end_inset
+
+ https://software.intel.com/en-us/articles/hybrid-parallelism-parallel-distributed
+-memory-and-shared-memory-computing
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "mpip2p"
+literal "true"
 
 \end_inset
 
-https://en.wikipedia.org/wiki/Message_Passing_Interface#Point-to-point_basics
+Wikipedia (en), Message passing interface, Point-to-point basics, Ανακτήθηκε
+ στις 21 Μαϊου 2020 από:
+\begin_inset Newline newline
+\end_inset
+
+ https://en.wikipedia.org/wiki/Message_Passing_Interface#Point-to-point_basics
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "msghandler"
+literal "true"
 
 \end_inset
 
-https://en.wikipedia.org/wiki/Message_passing#Synchronous_versus_asynchronous_mess
-age_passing
+Wikipedia (en), Message passing, Synchronous versus asynchronous message
+ passing, Ανακτήθηκε στις 21 Μαϊου 2020 από:
+\begin_inset Newline newline
+\end_inset
+
+ https://en.wikipedia.org/wiki/Message_passing#Synchronous_versus
+\begin_inset Newline newline
+\end_inset
+
+_asynchronous_message_passing
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "mpiterm"
+literal "true"
 
 \end_inset
 
-https://en.wikipedia.org/wiki/Message_Passing_Interface#Functionality
+Wikipedia (en), Message Passing Interface, Functionality, Ανακτήθηκε στις
+ 21 Μαϊου 2020 από:
+\begin_inset Newline newline
+\end_inset
+
+ https://en.wikipedia.org/wiki/Message_Passing_Interface#Functionality
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "mpiflex1"
+literal "true"
 
 \end_inset
 
-http://www.netlib.org/utk/papers/mpi-book/node3.html
+netlib.org, The Goals of MPI , Ανακτήθηκε στις 21 Μαϊου 2020 από:
+\begin_inset Newline newline
+\end_inset
+
+ http://www.netlib.org/utk/papers/mpi-book/node3.html
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "mpiflex2"
+literal "true"
 
 \end_inset
 
-www.netlib.org/utk/people/JackDongarra/PAPERS/cluster.pdf
+Bosilca G., Herault T., Rezmerita A., Dongarra J, On Scalability for MPI Runtime
+ Systems , Ανακτήθηκε στις 21 Μαϊου 2020 από:
+\begin_inset Newline newline
+\end_inset
+
+ www.netlib.org/utk/people/JackDongarra/PAPERS/cluster.pdf
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "mpispecsdominance"
+literal "true"
 
 \end_inset
 
-https://en.wikipedia.org/wiki/Message_Passing_Interface#Overview
+Wikipedia (en), Message Passing interface, Overview, Ανακτήθηκε στις 21
+ Μαϊου 2020 από:
+\begin_inset Newline newline
+\end_inset
+
+ https://en.wikipedia.org/wiki/Message_Passing_Interface#Overview
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "proclets"
+literal "true"
 
+\end_inset
+
+Kamal H., Mirtaheri S., Wagner A.
+ (2010), Scalability of communicators and groups in MPI, ACM Digital Library
+ Ανακτήθηκε στις 21 Μαϊου 2020 από: 
+\begin_inset Newline newline
 \end_inset
 
 https://dl.acm.org/citation.cfm?id=1851507
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "mpisucks"
+literal "true"
 
 \end_inset
 
-https://www.dursi.ca/post/hpc-is-dying-and-mpi-is-killing-it.html
+Dursi J., HPC is dying and MPI is killing it, Ανακτήθηκε στις 21 Μαϊου 2020
+ από:
+\begin_inset Newline newline
+\end_inset
+
+ https://www.dursi.ca/post/hpc-is-dying-and-mpi-is-killing-it.html
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "hadoop"
+literal "true"
 
 \end_inset
 
-https://en.wikipedia.org/wiki/Apache_Hadoop#Prominent_use_cases
+Wikipedia (en), Apache Hadoop, Prominent use cases, Ανακτήθηκε στις 21 Μαϊου
+ 2020 από:
+\begin_inset Newline newline
+\end_inset
+
+ https://en.wikipedia.org/wiki/Apache_Hadoop#Prominent_use_cases
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "julia"
+literal "true"
 
+\end_inset
+
+Wikipedia (en), Julia (programming language), Notable uses, Ανακτήθηκε στις
+ 21 Μαϊου 2020 από: 
+\begin_inset Newline newline
 \end_inset
 
 https://en.wikipedia.org/wiki/Julia_(programming_language)#Notable_uses
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "dataparallel"
+literal "true"
 
 \end_inset
 
-https://en.wikipedia.org/wiki/Graphics_processing_unit#Stream_processing_and_gener
-al_purpose_GPUs_(GPGPU)
+Wikipedia (en), Graphics processing unit, Stream processing and general
+ purpose GPUs (GPGPU), Ανακτήθηκε στις 21 Μαϊου 2020 από: 
+\begin_inset Newline newline
+\end_inset
+
+https://en.wikipedia.org/wiki/Graphics_processing_unit#Stream_processing
+\begin_inset Newline newline
+\end_inset
+
+_and_general_purpose_GPUs_(GPGPU)
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "gpudrawback"
+literal "true"
 
 \end_inset
 
-https://en.wikipedia.org/wiki/General-purpose_computing_on_graphics_processing_uni
-ts#Stream_processing
+Wikipedia (en), General-purpose computing on graphics processing units,
+ Stream processing, Ανακτήθηκε στις 21 Μαϊου 2020 από: 
+\begin_inset Newline newline
+\end_inset
+
+https://en.wikipedia.org/wiki/General-purpose_computing_on_graphics
+\begin_inset Newline newline
+\end_inset
+
+_processing_units#Stream_processing
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "gpgpuhistory"
+literal "true"
 
 \end_inset
 
-https://en.wikipedia.org/wiki/General-purpose_computing_on_graphics_processing_uni
-ts#History
+Wikipedia (en), General-purpose computing on graphics processing units,
+ History, Ανακτήθηκε στις 21 Μαϊου 2020 από:
+\begin_inset Newline newline
+\end_inset
+
+ https://en.wikipedia.org/wiki/General-purpose_computing_on_graphics
+\begin_inset Newline newline
+\end_inset
+
+_processing_units#History
 \end_layout
 
 \begin_layout Bibliography
+
+\lang english
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "gpgpuapplications"
+literal "true"
 
 \end_inset
 
-https://en.wikipedia.org/wiki/General-purpose_computing_on_graphics_processing_uni
-ts#Applications
+Wikipedia (en), General-purpose computing on graphics processing units,
+ Applications, Ανακτήθηκε στις 21 Μαϊου 2020 από: 
+\begin_inset Newline newline
+\end_inset
+
+https://en.wikipedia.org/wiki/General-purpose_computing_on_graphics
+\begin_inset Newline newline
+\end_inset
+
+_processing_units#Applications
+\end_layout
+
+\begin_layout Bibliography
+
+\lang english
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "sleepingbbq"
+literal "false"
+
+\end_inset
+
+Νεσλεχανίδης Ο.
+ (odnes), Github, sleepingbbq.cpp, Ανακτήθηκε στις 21 Μαϊου 2020 από: 
+\begin_inset Newline newline
+\end_inset
+
+https://github.com/odnes/pardist/blob/master/sleepingbbq.cpp
+\end_layout
+
+\begin_layout Bibliography
+
+\lang english
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "prodcon"
+literal "true"
+
+\end_inset
+
+Wikipedia (en), Producer-consumer problem, Ανακτήθηκε στις 21 Μαϊου 2020
+ από: 
+\begin_inset Newline newline
+\end_inset
+
+https://en.wikipedia.org/wiki/Producer-consumer_problem
+\end_layout
+
+\begin_layout Bibliography
+
+\lang english
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "sleepbarb"
+literal "true"
+
+\end_inset
+
+Wikipedia (en), Sleeping barber problem, Ανακτήθηκε στις 21 Μαϊου 2020 από:
+\begin_inset Newline newline
+\end_inset
+
+ https://en.wikipedia.org/wiki/Sleeping_barber_problem
+\end_layout
+
+\begin_layout Bibliography
+
+\lang english
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "threadsafe"
+literal "true"
+
+\end_inset
+
+Wikipedia (en), Thread safety, Ανακτήθηκε στις 21 Μαϊου 2020 από: 
+\begin_inset Newline newline
+\end_inset
+
+https://en.wikipedia.org/wiki/Thread_safety
+\end_layout
+
+\begin_layout Bibliography
+
+\lang english
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "lilbookosem"
+literal "true"
+
+\end_inset
+
+Downey A.
+ (2016), The Little Book of Semaphores, Green Tea Press, 47-52
+\end_layout
+
+\begin_layout Bibliography
+
+\lang english
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "trywait"
+literal "true"
+
+\end_inset
+
+die.net, sem_trywait(3) - Linux man page, Ανακτήθηκε στις 21 Μαϊου 2020 από:
+ 
+\begin_inset Newline newline
+\end_inset
+
+https://linux.die.net/man/3/sem_trywait
+\end_layout
+
+\begin_layout Bibliography
+
+\lang english
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "coutparallel"
+literal "true"
+
+\end_inset
+
+Stack Overflow, multiple threads writing to std::cout or std::cerr, Ανακτήθηκε
+ στις 21 Μαϊου 2020 από: 
+\begin_inset Newline newline
+\end_inset
+
+https://stackoverflow.com/questions/15033827/multiple-threads-writing-to-stdcout-
+or-stdcerr
 \end_layout
 
 \end_body
