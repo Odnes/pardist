@@ -1,6 +1,6 @@
 /*
     sleepingbbq.cpp
-    by thcloak
+    by odnes
     
     Compile with:
     g++ -Wall ./sleepingbbq.cpp -o sleepingbbq -pthread -std=c++11
